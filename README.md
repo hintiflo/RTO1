@@ -1,7 +1,7 @@
 # README #
 
 Apus Project to test real-time OS capabilities
-
+uC: STM32F072VBHx
 
 ### Phase 1 ###
 

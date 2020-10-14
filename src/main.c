@@ -49,15 +49,10 @@ void GPIO_setup( void )
 {
 
 	
-	  /* Enable clock for LED gpio port registers */
+	/* Enable clock for LED gpio port registers */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
 
-  /* LEDs are low active! */
-  /* -> a '0' on the gpio pin turns the LED on */
-  /* Thatswhy set all gpio pins to '1' before init */
-  // GPIOD->BSRR |= GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-  
-  /* Init all LEDs */
+  /* Init necessary GPIOs */
   GPIO_InitTypeDef gpioInit;
   GPIO_StructInit(&gpioInit);
   
