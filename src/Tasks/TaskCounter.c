@@ -11,13 +11,11 @@ void TaskCounter (void)
 {
 	static uint32_t counter = 0;
 	
-	GPIO_WriteBit(GPIOB, GPIO_Pin_1, Bit_SET);
 	
 	counter++;
 	snprintf(tmpBuf, MAX_LEN, "%d", counter);
 	Tft_DrawString(10, 18+0*24, "Cnt ");	
 	Tft_DrawString(10 + 16*7, 18+0*24, tmpBuf);		
 
-	GPIO_WriteBit(GPIOB, GPIO_Pin_1, Bit_RESET);
-
+	
 }

@@ -1,7 +1,7 @@
 .\output\adc.o: src\BSP\Adc.c
 .\output\adc.o: src\BSP\Adc.h
 .\output\adc.o: .\src\Services/StdDef.h
-.\output\adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\adc.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\output\adc.o: .\system\stm32f0-stdperiph\stm32f0xx_adc.h
 .\output\adc.o: .\src\Devices\stm32f0xx.h
 .\output\adc.o: .\src\Devices\core_cm0.h

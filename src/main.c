@@ -11,6 +11,29 @@
 #include <stdio.h>
 
 
+// Abstraction of GPIO-Manipulations into LED-Functions
+static void setSysTickLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_0,	Bit_SET);}
+static void resSysTickLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_0,	Bit_RESET);}
+
+static void setCounterLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_1,	Bit_SET);}
+static void resCounterLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_1,	Bit_RESET);}
+
+static void setKeyLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_3,	Bit_SET);}
+static void resKeyLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_3,	Bit_RESET);}
+
+static void setLedLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_12,	Bit_SET);}	
+static void resLedLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_12,	Bit_RESET);}	
+
+static void setWatchLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_13,	Bit_SET);}
+static void resWatchLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_13,	Bit_RESET);}
+
+static void setPotiLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_14,	Bit_SET);}	
+static void resPotiLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_14,	Bit_RESET);}	
+
+static void setMandelbrotLED()	{	GPIO_WriteBit(GPIOB, GPIO_Pin_15,	Bit_SET);}		
+static void resMandelbrotLED()	{	GPIO_WriteBit(GPIOB, GPIO_Pin_15,	Bit_RESET);}		
+
+
 void sleep()
 {
 	for(int i = 0; i<10000; i++)
@@ -20,34 +43,33 @@ void tryGPIO()
 {
 	while(1)
 	{
-		GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_SET);
+			setSysTickLED();
 		sleep();
-		GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_RESET);
-		GPIO_WriteBit(GPIOB, GPIO_Pin_1, Bit_SET);
+			resSysTickLED();
+			setCounterLED();
 		sleep();
-		GPIO_WriteBit(GPIOB, GPIO_Pin_1, Bit_RESET);
-		GPIO_WriteBit(GPIOB, GPIO_Pin_3, Bit_SET);
+			resCounterLED();
+			setKeyLED();			
 		sleep();
-		GPIO_WriteBit(GPIOB, GPIO_Pin_3, Bit_RESET);
-		GPIO_WriteBit(GPIOB, GPIO_Pin_12, Bit_SET);
+			resKeyLED();			
+			setLedLED();			
 		sleep();
-		GPIO_WriteBit(GPIOB, GPIO_Pin_12, Bit_RESET);
-		GPIO_WriteBit(GPIOB, GPIO_Pin_13, Bit_SET);
+			resLedLED();			
+			setWatchLED();	
 		sleep();
-		GPIO_WriteBit(GPIOB, GPIO_Pin_13, Bit_RESET);
-		GPIO_WriteBit(GPIOB, GPIO_Pin_14, Bit_SET);
+			resWatchLED();	
+			setPotiLED()	;	
 		sleep();
-		GPIO_WriteBit(GPIOB, GPIO_Pin_14, Bit_RESET);
-		GPIO_WriteBit(GPIOB, GPIO_Pin_15, Bit_SET);
+			resPotiLED()	;	
+			setMandelbrotLED();	
 		sleep();
-		GPIO_WriteBit(GPIOB, GPIO_Pin_15, Bit_RESET);
-		
-	sleep();
-	sleep();
-	sleep();
-	sleep();
-	sleep();
-	sleep();
+			resMandelbrotLED();	
+		sleep();
+		sleep();
+		sleep();
+		sleep();
+		sleep();
+		sleep();
 	}
 }
 void GPIO_setup( void );
@@ -66,7 +88,7 @@ int main(void)
 	
 	GPIO_setup();
 	
-	//tryGPIO();
+	// tryGPIO();
 	
 	
   while (1)
@@ -75,14 +97,34 @@ int main(void)
 		
 	// GPIO_SetBits(GPIOB, GPIO_Pin_0);
 	// void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-		
-		TaskCounter();
-		TaskKey();
-		TaskLed();	
-		TaskWatch();
-		TaskPoti();	
+		setSysTickLED();
 
-		//TaskMandelbrot();		
+		setCounterLED();
+		TaskCounter();
+		resCounterLED();
+		
+		setKeyLED();
+		TaskKey();
+		resKeyLED();
+
+		setLedLED();
+		TaskLed();	
+		resLedLED();
+
+		setWatchLED();
+		TaskWatch();
+		resWatchLED();
+
+		setPotiLED();
+		TaskPoti();	
+		resPotiLED();
+
+		resSysTickLED();
+
+		// setMandelbrotLED();
+		// TaskMandelbrot();		
+		// resMandelbrotLED();		
+
   }
 }
 

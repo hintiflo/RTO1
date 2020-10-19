@@ -1,6 +1,6 @@
 .\output\main.o: src\main.c
 .\output\main.o: src\Services/StdDef.h
-.\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\main.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\output\main.o: src\BSP/Key.h
 .\output\main.o: src\BSP/Led.h
 .\output\main.o: src\BSP/Adc.h
@@ -46,4 +46,4 @@
 .\output\main.o: .\src\Tasks\TaskCounter.h
 .\output\main.o: .\src\Tasks\TaskPoti.h
 .\output\main.o: .\src\Tasks\TaskLed.h
-.\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\output\main.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

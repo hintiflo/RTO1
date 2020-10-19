@@ -3,7 +3,7 @@
 .\output\stm32f0xx_misc.o: .\system\stm32f0-stdperiph\stm32f0xx_adc.h
 .\output\stm32f0xx_misc.o: .\src\Devices\stm32f0xx.h
 .\output\stm32f0xx_misc.o: .\src\Devices\core_cm0.h
-.\output\stm32f0xx_misc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\stm32f0xx_misc.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\output\stm32f0xx_misc.o: .\src\Devices\core_cmInstr.h
 .\output\stm32f0xx_misc.o: .\src\Devices\core_cmFunc.h
 .\output\stm32f0xx_misc.o: .\src\Devices\system_stm32f0xx.h

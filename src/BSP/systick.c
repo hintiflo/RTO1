@@ -26,9 +26,9 @@ static uint32_t msTicks;      		// Counts 1ms timeTicks
 * Return:     (none)
 *----------------------------------------------------------------------------*/
 void SysTick_Handler (void)  {
-	GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_SET);
+	// GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_SET);
   msTicks++;                                    // increment Tick-counter
-	GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_RESET);
+	// GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_RESET);
 
 }
 

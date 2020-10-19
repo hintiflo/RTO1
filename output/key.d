@@ -1,7 +1,7 @@
 .\output\key.o: src\BSP\Key.c
 .\output\key.o: src\BSP\Key.h
 .\output\key.o: .\src\Services/StdDef.h
-.\output\key.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\key.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\output\key.o: .\system\stm32f0-stdperiph\stm32f0xx_gpio.h
 .\output\key.o: .\src\Devices\stm32f0xx.h
 .\output\key.o: .\src\Devices\core_cm0.h

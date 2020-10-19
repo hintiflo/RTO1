@@ -1,5 +1,5 @@
 .\output\systick.o: src\BSP\systick.c
-.\output\systick.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\systick.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\output\systick.o: .\src\Devices\stm32f0xx.h
 .\output\systick.o: .\src\Devices\core_cm0.h
 .\output\systick.o: .\src\Devices\core_cmInstr.h
