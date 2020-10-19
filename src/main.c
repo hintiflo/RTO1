@@ -10,11 +10,52 @@
 
 #include <stdio.h>
 
+
+void sleep()
+{
+	for(int i = 0; i<10000; i++)
+		__NOP;
+}
+void tryGPIO()
+{
+	while(1)
+	{
+		GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_SET);
+		sleep();
+		GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_RESET);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_1, Bit_SET);
+		sleep();
+		GPIO_WriteBit(GPIOB, GPIO_Pin_1, Bit_RESET);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_3, Bit_SET);
+		sleep();
+		GPIO_WriteBit(GPIOB, GPIO_Pin_3, Bit_RESET);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_12, Bit_SET);
+		sleep();
+		GPIO_WriteBit(GPIOB, GPIO_Pin_12, Bit_RESET);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_13, Bit_SET);
+		sleep();
+		GPIO_WriteBit(GPIOB, GPIO_Pin_13, Bit_RESET);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_14, Bit_SET);
+		sleep();
+		GPIO_WriteBit(GPIOB, GPIO_Pin_14, Bit_RESET);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_15, Bit_SET);
+		sleep();
+		GPIO_WriteBit(GPIOB, GPIO_Pin_15, Bit_RESET);
+		
+	sleep();
+	sleep();
+	sleep();
+	sleep();
+	sleep();
+	sleep();
+	}
+}
 void GPIO_setup( void );
 	
 	
 int main(void)
 {
+
   Key_Init();
   Led_Init();
   Tft_Init();
@@ -25,7 +66,7 @@ int main(void)
 	
 	GPIO_setup();
 	
-	
+	//tryGPIO();
 	
 	
   while (1)
@@ -41,7 +82,7 @@ int main(void)
 		TaskWatch();
 		TaskPoti();	
 
-		// TaskMandelbrot();		
+		//TaskMandelbrot();		
   }
 }
 

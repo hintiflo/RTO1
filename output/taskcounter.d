@@ -1,11 +1,11 @@
 .\output\taskcounter.o: src\Tasks\TaskCounter.c
 .\output\taskcounter.o: .\src\BSP/TftDisplay.h
 .\output\taskcounter.o: .\src\Services/StdDef.h
-.\output\taskcounter.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\taskcounter.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\output\taskcounter.o: .\src\Fonts/TftFont.h
-.\output\taskcounter.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\StdDef.h
+.\output\taskcounter.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\StdDef.h
 .\output\taskcounter.o: src\Tasks\TaskCounter.h
-.\output\taskcounter.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\output\taskcounter.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\output\taskcounter.o: .\system\stm32f0-stdperiph\stm32f0xx_gpio.h
 .\output\taskcounter.o: .\src\Devices\stm32f0xx.h
 .\output\taskcounter.o: .\src\Devices\core_cm0.h

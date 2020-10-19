@@ -1,7 +1,7 @@
 .\output\tftdisplay.o: src\BSP\TftDisplay.c
 .\output\tftdisplay.o: src\BSP\TftDisplay.h
 .\output\tftdisplay.o: .\src\Services/StdDef.h
-.\output\tftdisplay.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\tftdisplay.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\output\tftdisplay.o: .\src\Fonts/TftFont.h
 .\output\tftdisplay.o: .\system\stm32f0-stdperiph\stm32f0xx_gpio.h
 .\output\tftdisplay.o: .\src\Devices\stm32f0xx.h
@@ -34,4 +34,4 @@
 .\output\tftdisplay.o: .\system\stm32f0-stdperiph\stm32f0xx_usart.h
 .\output\tftdisplay.o: .\system\stm32f0-stdperiph\stm32f0xx_wwdg.h
 .\output\tftdisplay.o: .\system\stm32f0-stdperiph\stm32f0xx_misc.h
-.\output\tftdisplay.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
+.\output\tftdisplay.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
