@@ -6,3 +6,7 @@ uC: STM32F072VBHx
 ### Phase 1 ###
 
 investigate of a simple looped application with multiple tasks of varying length
+
+## Contributers
+Simon Steindl
+Florian Hinterleitner
