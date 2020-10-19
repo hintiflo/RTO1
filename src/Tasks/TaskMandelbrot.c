@@ -1,6 +1,7 @@
 #include "BSP/TftDisplay.h"
 #include "StdDef.h"
 #include "TaskMandelbrot.h"
+#include "stm32f0xx.h"
 
 // Quelle Algorithmus Mandelbrot: http://warp.povusers.org/Mandelbrot/ 
 
@@ -47,6 +48,10 @@ static void MandelBrot (void)
 
 void TaskMandelbrot (void)
 {
+	
+	GPIO_WriteBit(GPIOB, GPIO_Pin_15, Bit_SET);
 	Tft_DrawString(10, 18+5*24, "ManBr ");
 	MandelBrot();	
+	
+	GPIO_WriteBit(GPIOB, GPIO_Pin_15, Bit_SET);
 }

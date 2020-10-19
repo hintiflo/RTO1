@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\output\Apus.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\output\Apus.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Oct 08 15:16:14 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Oct 14 17:26:35 2020
 <BR><P>
 <H3>Maximum Stack Usage =        268 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -285,7 +285,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[3a]"></a>GPIO_WriteBit</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f0xx_gpio.o(i.GPIO_WriteBit))
-<BR><BR>[Called By]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskCounter
+<BR><BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskWatch
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskPoti
+<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskLed
+<LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskKey
+<LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskCounter
 <LI><a href="#[5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
@@ -354,34 +358,38 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[3f]"></a>TaskKey</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, taskkey.o(i.TaskKey))
+<P><STRONG><a name="[3f]"></a>TaskKey</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, taskkey.o(i.TaskKey))
 <BR><BR>[Stack]<UL><LI>Max Depth = 268<LI>Call Chain = TaskKey &rArr; Tft_DrawString &rArr; Tft_DrawChar &rArr; Tft_SetWindow &rArr; __aeabi_assert
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tft_DrawString
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[40]"></a>TaskLed</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, taskled.o(i.TaskLed))
+<P><STRONG><a name="[40]"></a>TaskLed</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, taskled.o(i.TaskLed))
 <BR><BR>[Stack]<UL><LI>Max Depth = 268<LI>Call Chain = TaskLed &rArr; Tft_DrawString &rArr; Tft_DrawChar &rArr; Tft_SetWindow &rArr; __aeabi_assert
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tft_DrawString
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[41]"></a>TaskPoti</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, taskpoti.o(i.TaskPoti))
+<P><STRONG><a name="[41]"></a>TaskPoti</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, taskpoti.o(i.TaskPoti))
 <BR><BR>[Stack]<UL><LI>Max Depth = 268<LI>Call Chain = TaskPoti &rArr; Tft_DrawString &rArr; Tft_DrawChar &rArr; Tft_SetWindow &rArr; __aeabi_assert
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tft_DrawString
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[42]"></a>TaskWatch</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, taskwatch.o(i.TaskWatch))
+<P><STRONG><a name="[42]"></a>TaskWatch</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, taskwatch.o(i.TaskWatch))
 <BR><BR>[Stack]<UL><LI>Max Depth = 268<LI>Call Chain = TaskWatch &rArr; Tft_DrawString &rArr; Tft_DrawChar &rArr; Tft_SetWindow &rArr; __aeabi_assert
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tft_DrawString
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>

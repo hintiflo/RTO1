@@ -1,7 +1,7 @@
 .\output\system_stm32f0xx.o: src\Devices\system_stm32f0xx.c
 .\output\system_stm32f0xx.o: src\Devices\stm32f0xx.h
 .\output\system_stm32f0xx.o: src\Devices\core_cm0.h
-.\output\system_stm32f0xx.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\system_stm32f0xx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\output\system_stm32f0xx.o: .\src\Devices\core_cmInstr.h
 .\output\system_stm32f0xx.o: .\src\Devices\core_cmFunc.h
 .\output\system_stm32f0xx.o: src\Devices\system_stm32f0xx.h

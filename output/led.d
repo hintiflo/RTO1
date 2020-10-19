@@ -1,7 +1,7 @@
 .\output\led.o: src\BSP\Led.c
 .\output\led.o: src\BSP\Led.h
 .\output\led.o: .\src\Services/StdDef.h
-.\output\led.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\led.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\output\led.o: .\system\stm32f0-stdperiph\stm32f0xx_gpio.h
 .\output\led.o: .\src\Devices\stm32f0xx.h
 .\output\led.o: .\src\Devices\core_cm0.h
