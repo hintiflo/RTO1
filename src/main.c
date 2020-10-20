@@ -34,12 +34,16 @@ static void setMandelbrotLED()	{	GPIO_WriteBit(GPIOB, GPIO_Pin_15,	Bit_SET);}
 static void resMandelbrotLED()	{	GPIO_WriteBit(GPIOB, GPIO_Pin_15,	Bit_RESET);}		
 
 
-void sleep()
+static void sleep()
 {
 	for(int i = 0; i<10000; i++)
 		__NOP;
 }
-void tryGPIO()
+
+
+// sequential setting/resetting of GPIOs to help during wiring of the logic analyzer
+// additional sleep-phase in the end for snycronosation with Analyzer-View
+static void tryGPIO()	
 {
 	while(1)
 	{
@@ -92,12 +96,7 @@ int main(void)
 	
 	
   while (1)
-  {
-		
-		
-	// GPIO_SetBits(GPIOB, GPIO_Pin_0);
-	// void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-		setSysTickLED();
+  {	setSysTickLED();
 
 		setCounterLED();
 		TaskCounter();
@@ -119,12 +118,12 @@ int main(void)
 		TaskPoti();	
 		resPotiLED();
 
+
+		 setMandelbrotLED();
+		 TaskMandelbrot();		
+		 resMandelbrotLED();		
+
 		resSysTickLED();
-
-		// setMandelbrotLED();
-		// TaskMandelbrot();		
-		// resMandelbrotLED();		
-
   }
 }
 
