@@ -5,3 +5,5 @@
 15.10.2020	2nd Lesson, added signaling-GPIOs to all Tasks
 
 19.10.2020	wrapping GPIO-Functions into abstractions, added basic course-protocol
+
+21.10.2020	separate FW-projects for part A and B of the first assignment
