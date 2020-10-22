@@ -10,6 +10,7 @@
 #define OFFSET			150
 
 
+
 static void MandelBrot (void)
 {
 	double MinRe = -2.0;
@@ -20,8 +21,12 @@ static void MandelBrot (void)
 	double Im_factor = (MaxIm-MinIm)/(ImageHeight-1);
 	unsigned MaxIterations = 30;
 
-	for(unsigned y=0; y<ImageHeight; ++y)
-	{
+
+//	for(unsigned y=0; y<ImageHeight; ++y)
+	unsigned y=0; 
+	while(y<ImageHeight)
+	{		y++;
+			
 			double c_im = MaxIm - y*Im_factor;
 			for(unsigned x=0; x<ImageWidth; ++x)
 			{
@@ -41,6 +46,12 @@ static void MandelBrot (void)
 							Z_re = Z_re2 - Z_im2 + c_re;
 					}
 					if(isInside) { Tft_DrawPixel(y, x + OFFSET); }
+			}
+			if(y > ImageHeight/2)
+			{ 
+			
+				break;
+				
 			}
 	}
 }

@@ -7,3 +7,5 @@
 19.10.2020	wrapping GPIO-Functions into abstractions, added basic course-protocol
 
 21.10.2020	separate FW-projects for part A and B of the first assignment
+
+22.10.2020	Poti works a little bit, MandelBort breaks after half image

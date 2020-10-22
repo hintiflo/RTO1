@@ -88,6 +88,7 @@ int main(void)
   Tft_SetFont(&TftFont_16x24);
 	Tft_ClearScreen();	
   Adc_Init(ADC_CHANNEL_POTENTIOMETER);	
+	
 	Tick_InitSysTick();
 	
 	GPIO_setup();
