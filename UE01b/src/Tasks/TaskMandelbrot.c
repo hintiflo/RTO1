@@ -10,7 +10,12 @@
 #define ImageWidth  150
 #define OFFSET			150
 
-#define INTERVAL_MANDEL 1000
+#define INTERVAL_MANDEL 400
+
+static unsigned von = 0;
+static unsigned bis = ImageHeight/INTERVAL_MANDEL;
+static unsigned intervalCnt = 0;
+
 
 static void MandelBrot (void)
 {
@@ -22,9 +27,12 @@ static void MandelBrot (void)
 	double Im_factor = (MaxIm-MinIm)/(ImageHeight-1);
 	unsigned MaxIterations = 30;
 
+	static uint32_t lastTick = 0;
+	uint32_t tick = Systick_GetTick();
 
-//	for(unsigned y=0; y<ImageHeight; ++y)
-	unsigned y=0; 
+	unsigned y = von; 
+	// bis = ImageHeight/INTERVAL_MANDEL;
+	
 	while(y<ImageHeight)
 	{		
 		y++;
@@ -49,10 +57,16 @@ static void MandelBrot (void)
 							Z_im = 2*Z_re*Z_im + c_im;
 							Z_re = Z_re2 - Z_im2 + c_re;
 					}
-					if(isInside) { Tft_DrawPixel(y, x + OFFSET); }
 				
+				if(isInside) { Tft_DrawPixel(y, x + OFFSET); }
 			}
-			// if(y > ImageHeight/2)			{ 					break;				}
+			if(y > bis)			
+			{
+				intervalCnt++;
+				von = bis;
+				bis = intervalCnt*ImageHeight/INTERVAL_MANDEL;
+				break;				
+			}
 	}
 }
 

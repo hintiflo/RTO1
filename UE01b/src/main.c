@@ -122,7 +122,7 @@ int main(void)
 
 
 		 setMandelbrotLED();
-		 // TaskMandelbrot();		
+		 TaskMandelbrot();		
 		 resMandelbrotLED();		
 
 		resSysTickLED();
