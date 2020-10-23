@@ -9,3 +9,5 @@
 21.10.2020	separate FW-projects for part A and B of the first assignment
 
 22.10.2020	Poti works a little bit, MandelBort breaks after half image
+
+23.10.2020	separate INTERVAL defines for every Task

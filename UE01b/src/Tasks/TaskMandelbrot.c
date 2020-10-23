@@ -2,6 +2,7 @@
 #include "StdDef.h"
 #include "TaskMandelbrot.h"
 #include "stm32f0xx.h"
+#include "BSP/systick.h"
 
 // Quelle Algorithmus Mandelbrot: http://warp.povusers.org/Mandelbrot/ 
 
@@ -9,7 +10,7 @@
 #define ImageWidth  150
 #define OFFSET			150
 
-
+#define INTERVAL_MANDEL 1000
 
 static void MandelBrot (void)
 {
@@ -25,15 +26,18 @@ static void MandelBrot (void)
 //	for(unsigned y=0; y<ImageHeight; ++y)
 	unsigned y=0; 
 	while(y<ImageHeight)
-	{		y++;
+	{		
+		y++;
 			
 			double c_im = MaxIm - y*Im_factor;
 			for(unsigned x=0; x<ImageWidth; ++x)
 			{
-					double c_re = MinRe + x*Re_factor;
+				unsigned char isInside = TRUE;
+
+				double c_re = MinRe + x*Re_factor;
 
 					double Z_re = c_re, Z_im = c_im;
-					unsigned char isInside = TRUE;
+					isInside = TRUE;
 					for(unsigned n=0; n<MaxIterations; ++n)
 					{
 							double Z_re2 = Z_re*Z_re, Z_im2 = Z_im*Z_im;
@@ -46,16 +50,11 @@ static void MandelBrot (void)
 							Z_re = Z_re2 - Z_im2 + c_re;
 					}
 					if(isInside) { Tft_DrawPixel(y, x + OFFSET); }
-			}
-			if(y > ImageHeight/2)
-			{ 
-			
-				break;
 				
 			}
+			// if(y > ImageHeight/2)			{ 					break;				}
 	}
 }
-
 
 void TaskMandelbrot (void)
 {	Tft_DrawString(10, 18+5*24, "ManBr ");

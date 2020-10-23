@@ -97,7 +97,8 @@ int main(void)
 	
 	
   while (1)
-  {	setSysTickLED();
+  {	
+		setSysTickLED();
 
 		setCounterLED();
 		TaskCounter();
@@ -121,7 +122,7 @@ int main(void)
 
 
 		 setMandelbrotLED();
-		 TaskMandelbrot();		
+		 // TaskMandelbrot();		
 		 resMandelbrotLED();		
 
 		resSysTickLED();
