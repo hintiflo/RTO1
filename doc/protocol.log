@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2020.9.14)  23 OCT 2020 21:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2020.9.14)  23 OCT 2020 22:00
 entering extended mode
 **./protocol.tex
 (protocol.tex
@@ -728,7 +728,7 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 68.
 ("C:\bin\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for TS1+lmss on input line 88.
+LaTeX Font Info:    Try loading font information for TS1+lmss on input line 87.
 
 
 ("C:\bin\MiKTeX 2.9\tex/latex/lm\ts1lmss.fd"
@@ -737,47 +737,55 @@ File: ts1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 <tryGPIO.png, id=11, 687.06688pt x 183.18437pt>
 File: tryGPIO.png Graphic file (type png)
 <use tryGPIO.png>
-Package pdftex.def Info: tryGPIO.png  used on input line 95.
+Package pdftex.def Info: tryGPIO.png  used on input line 92.
 (pdftex.def)             Requested size: 500.484pt x 133.43835pt.
  [1 <./debugUnit.png>]
-<02_mitMandelbrot.png, id=19, 1015.29312pt x 149.55875pt>
+<02_mitMandelbrot.png, id=18, 1015.29312pt x 149.55875pt>
 File: 02_mitMandelbrot.png Graphic file (type png)
 <use 02_mitMandelbrot.png>
-Package pdftex.def Info: 02_mitMandelbrot.png  used on input line 96.
+Package pdftex.def Info: 02_mitMandelbrot.png  used on input line 93.
 (pdftex.def)             Requested size: 500.484pt x 73.72487pt.
-<03_ohneMandelbrot_time.png, id=20, 687.56876pt x 177.66376pt>
+<03_ohneMandelbrot_time.png, id=19, 687.56876pt x 177.66376pt>
 File: 03_ohneMandelbrot_time.png Graphic file (type png)
 <use 03_ohneMandelbrot_time.png>
-Package pdftex.def Info: 03_ohneMandelbrot_time.png  used on input line 97.
+Package pdftex.def Info: 03_ohneMandelbrot_time.png  used on input line 94.
 (pdftex.def)             Requested size: 500.484pt x 129.32205pt.
-<RTO1_UE1_APUS.jpg, id=21, 3028.31375pt x 2049.6575pt>
+<RTO1_UE1_APUS.jpg, id=20, 3028.31375pt x 2049.6575pt>
 File: RTO1_UE1_APUS.jpg Graphic file (type jpg)
 <use RTO1_UE1_APUS.jpg>
-Package pdftex.def Info: RTO1_UE1_APUS.jpg  used on input line 104.
-(pdftex.def)             Requested size: 500.484pt x 338.74185pt.
+Package pdftex.def Info: RTO1_UE1_APUS.jpg  used on input line 99.
+(pdftex.def)             Requested size: 400.38872pt x 270.96846pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
+<04_TeilB.png, id=21, 674.52pt x 183.68625pt>
+File: 04_TeilB.png Graphic file (type png)
+<use 04_TeilB.png>
+Package pdftex.def Info: 04_TeilB.png  used on input line 101.
+(pdftex.def)             Requested size: 500.484pt x 136.29564pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 [2 <./tryGPIO.png> <./02_mitMandelbrot.png> <./03_ohneMandelbrot_time.png>]
-[3 <./RTO1_UE1_APUS.jpg>] (protocol.aux) ) 
+[3 <./RTO1_UE1_APUS.jpg> <./04_TeilB.png>] (protocol.aux) ) 
 Here is how much of TeX's memory you used:
- 5597 strings out of 492895
- 73756 string characters out of 3138119
+ 5603 strings out of 492895
+ 73847 string characters out of 3138119
  159300 words of memory out of 3000000
- 9337 multiletter control sequences out of 15000+200000
- 46288 words of font info for 47 fonts, out of 3000000 for 9000
+ 9343 multiletter control sequences out of 15000+200000
+ 45918 words of font info for 46 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,9n,43p,277b,279s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/bin/MiKTeX 2.9/fonts/enc/dvips/lm
-/lm-ts1.enc}{C:/bin/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}<C:/bin/MiKTeX 2.9/
-fonts/type1/public/lm/lmss10.pfb><C:/bin/MiKTeX 2.9/fonts/type1/public/lm/lmss1
-2.pfb><C:/bin/MiKTeX 2.9/fonts/type1/public/lm/lmss17.pfb><C:/bin/MiKTeX 2.9/fo
-nts/type1/public/lm/lmss9.pfb><C:/bin/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10
-.pfb>
-Output written on protocol.pdf (4 pages, 1651630 bytes).
+ 41i,9n,43p,315b,281s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/bin/MiKTeX 2.9/f
+onts/enc/dvips/lm/lm-ts1.enc}{C:/bin/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}<C
+:/bin/MiKTeX 2.9/fonts/type1/public/lm/lmss10.pfb><C:/bin/MiKTeX 2.9/fonts/type
+1/public/lm/lmss12.pfb><C:/bin/MiKTeX 2.9/fonts/type1/public/lm/lmss17.pfb><C:/
+bin/MiKTeX 2.9/fonts/type1/public/lm/lmss9.pfb><C:/bin/MiKTeX 2.9/fonts/type1/p
+ublic/lm/lmssbx10.pfb>
+Output written on protocol.pdf (4 pages, 1682320 bytes).
 PDF statistics:
  51 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

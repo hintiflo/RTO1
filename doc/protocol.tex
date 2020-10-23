@@ -83,15 +83,12 @@
 
 		
 
-	*) jedoch mit SysTick GPIOs, ohne die gar keine Messung möglich wäre
 
 \subsection{Overhead (Zyklen, µs) der Messung}
--  Geben Sie an, wie viel Overhead (Zyklen, µs) der Code der Messung verursacht \\
-	1 sleep() mit 10000 NOPs entspricht 1.67ms (1.668ms) \\
-	Systick 31.86ms ohne allem
-	33.10ms mit allen LEDS
+Der Overhead, also das schalten der GPIOs, errechnet sich aus der Lauzeit des Systemzyklus mit und ohne*) GPIOs: 29.39ms - 29.38ms = 0.01ms ~= 10us. Die Zeitdifferenz ist als grober Schätzwert zu betrchten, da die Auflösung in der 2ten Kommastelle schon sehr gering ausfällt. \\
+	*) jedoch mit SysTick GPIOs, ohne die gar keine Messung möglich wäre
 
-	\subsection{Screenshots der Messungen }
+\subsection{Screenshots der Messungen }
 \bild{tryGPIO}{GPIO-Treppe zum korrekten Verkabeln und Zuordnen der LA-Kanäle zu Tasks}{width=\textwidth}
 \bild{02_mitMandelbrot}{mit Mandelbrot-Task}{width=\textwidth}
 \bild{03_ohneMandelbrot_time}{ohne Mandelbrot-Task}{width=\textwidth}
@@ -99,8 +96,11 @@
 
 
 \section{Übungsaufgabe B – Reaktionsgeschwindigkeit bei Superloops}
-\ldots
+\bild{RTO1_UE1_APUS}{Funktionstest der erweiterten Tasks}{width=0.8\textwidth}
+Durch abrufen des Systicks innerhalb der Tasks und, darauf basierend, bedingter Ausführung von Task-Teilen, liess sich die zeitgerechte Funktion der meisten Tasks ausprogrammieren.
+\bild{04_TeilB}{Laufzeiten der erweiterten Tasks}{width=\textwidth}
+Der Zeitkritische Counter-Task benötigt mit 8.163ms weniger als 10ms, Key- und Poti-Task unter 50ms, Watch liegt mit 14.76ms auch weit unter der geforderten 1s. Lediglich der Mandelbrot-Task liess sich bis zum Ende der Abgabe nicht ausreichend schnell unterbrechen/fortsetzen.
 
-\bild{RTO1_UE1_APUS}{mitMandelbrot}{width=\textwidth}
+
 
 \end{document} 
