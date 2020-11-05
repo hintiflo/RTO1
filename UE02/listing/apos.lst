@@ -1,0 +1,14 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+                       
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0 --apcs=interw
+ork --depend=.\output\apos_1.d -o.\output\apos_1.o -IC:\Users\r.hif\AppData\Loc
+al\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include
+ -IC:\bin\Keil_v5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__
+MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 532" --predefine="STM32F07
+2xB SETA 1" --list=.\listing\apos.lst src\APOS.s
+334 symbols in table
