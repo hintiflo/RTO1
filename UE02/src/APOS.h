@@ -17,7 +17,7 @@ typedef struct
 	uint32_t stackSize;
 	uint32_t timeSlice;
 #ifdef DEBUG
-	char * pTaskName
+	char * pTaskName;
 #endif
 	
 }APOS_TCB_STRUCT;

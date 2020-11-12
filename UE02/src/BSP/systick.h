@@ -9,6 +9,6 @@
 void 						Tick_Delay (uint32_t dlyTicks);
 void						Tick_InitSysTick(void);
 void 						SysTick_Handler2 (void);
-
+int 						Systick_GetTick(void);
 
 #endif /* __TICK_H */

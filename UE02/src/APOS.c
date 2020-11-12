@@ -4,7 +4,7 @@
 #include <string.h>
 #include "Services/StdDef.h"
 #include "APOS.h"
-#include "systick.h"
+#include "BSP/systick.h"
 
 static const uint32_t numTasks = 10;
 static APOS_TCB_STRUCT* pTasks[numTasks];
@@ -35,9 +35,7 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 						)
 {
 	static uint32_t currentTask = 0;	
-	
-	if(Priority < -20 || Priority > 20)
-		return;
+
 	
 	if(pRoutine == NULL)
 		return;
@@ -76,9 +74,12 @@ void APOS_Start(void)  // Starten des Echtzeitbetriebssystems
 						
 void APOS_Scheduler(void)
 {
-	static int lastTick = Systick_GetTick();
+	static int lastTick = 0;
 	static uint32_t currentTask;
 	int tick = Systick_GetTick();
+	if(lastTick == 0)
+		lastTick = tick;
+	
 	
 	// exec task
 	while(tick - lastTick < pTasks[currentTask]->timeSlice) {

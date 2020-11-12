@@ -14,4 +14,4 @@
 
 05.11.2020	2nd lesson: copies of 1st project and implementation of an RTOS
 
-05.11.2020	dummy tasks A, B and C to fill Registrs with detectable Data
+12.11.2020	dummy tasks A, B and C to fill Registrs with detectable Data
