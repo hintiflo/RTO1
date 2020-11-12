@@ -46,4 +46,6 @@
 .\output\main.o: .\src\Tasks\TaskCounter.h
 .\output\main.o: .\src\Tasks\TaskPoti.h
 .\output\main.o: .\src\Tasks\TaskLed.h
+.\output\main.o: .\src\Tasks\TestTask.h
+.\output\main.o: src\APOS.h
 .\output\main.o: C:\bin\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

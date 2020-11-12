@@ -8,6 +8,9 @@
 #include "Fonts/TftFont_16x24.h"
 #include "TaskAll.h"
 
+#include "TestTask.h"
+#include "APOS.h"
+
 #include <stdio.h>
 
 
@@ -95,15 +98,14 @@ int main(void)
 	
 	// tryGPIO();
 	
-	
+	// Hinweise von Langer aus der letzten Ü:
 //	PSP porcess stack pointer
 //	MSP master stack pointer
 //	PndSV interrupt for context switch
 //	pTask enthält zB stackpointer
 //	TimeSlice = wieviel Slices möcht ich für den Task
-
+// bei HardFaults: Stack, Speicher, Register anschauen, Screenshots machen beim Debuggen, wie is vorher/nacher
 //	sysTick auf 1 ms
-
 //	sysTick setzt PenSV (handelt auch Interrupts, die ich nicht behandle zB SPIs oä)
 //	-> interrupt
 //	-> APUS Scheduler
@@ -118,9 +120,16 @@ int main(void)
 //		ProgramCounter	zum rückspringen
 	
 	// 0xFFFFFFFD ins LR beim rücksprung?
+
+	
+	
 	
   while (1)
   {	
+		FillTaskA();
+		FillTaskB();
+		FillTaskC();
+
 		setSysTickLED();
 
 		setCounterLED();
@@ -151,6 +160,18 @@ int main(void)
 		resSysTickLED();
   }
 }
+
+
+// void TaskA (void) 
+// {
+// 	FillTaskA();
+// 	// while (1) 
+// 	// { Debug_TaskOn_A();
+// 		// enter Code
+// 		// Debug_TaskOff_A();
+// 		// APOS_Scheduler();
+// 	// 	}
+// }
 
 void GPIO_setup( void )
 {

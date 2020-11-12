@@ -166,7 +166,7 @@ I (.\system\stm32f0-stdperiph\stm32f0xx_usart.h)(0x5F8DDB6C)
 I (.\system\stm32f0-stdperiph\stm32f0xx_wwdg.h)(0x5F8DDB6C)
 I (.\system\stm32f0-stdperiph\stm32f0xx_misc.h)(0x5F8DDB6B)
 I (src\BSP\systick.h)(0x5F8DDB68)
-F (.\src\main.c)(0x5FA3F6E9)(--c99 -c --cpu Cortex-M0 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\src -I .\system\stm32f0-stdperiph -I .\src\Devices -I .\src\USB -I .\src\CLibrarys -I .\src\ioLibrary_Driver\Ethernet -I .\src\ioLibrary_Driver\Internet -I .\src\ff12c\src -I .\src\Tasks-IC:\Users\r.hif\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include-IC:\bin\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="532" -DSTM32F072xB -DSTM32F072 -DUSE_STDPERIPH_DRIVER -DUSE_USB_DEVICE_FS -DINTERNAL_PULLUP-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
+F (.\src\main.c)(0x5FAD35FC)(--c99 -c --cpu Cortex-M0 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\src -I .\system\stm32f0-stdperiph -I .\src\Devices -I .\src\USB -I .\src\CLibrarys -I .\src\ioLibrary_Driver\Ethernet -I .\src\ioLibrary_Driver\Internet -I .\src\ff12c\src -I .\src\Tasks-IC:\Users\r.hif\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include-IC:\bin\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="532" -DSTM32F072xB -DSTM32F072 -DUSE_STDPERIPH_DRIVER -DUSE_USB_DEVICE_FS -DINTERNAL_PULLUP-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
 I (src\Services/StdDef.h)(0x5F8DDB68)
 I (C:\bin\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5F63DBDC)
 I (src\BSP/Key.h)(0x5F8DDB68)
@@ -212,13 +212,15 @@ I (.\src\Tasks\TaskKey.h)(0x5F931423)
 I (.\src\Tasks\TaskCounter.h)(0x5F8DDB68)
 I (.\src\Tasks\TaskPoti.h)(0x5F8DDB68)
 I (.\src\Tasks\TaskLed.h)(0x5F931423)
+I (.\src\Tasks\TestTask.h)(0x5FAD3577)
+I (src\APOS.h)(0x5FAD3566)
 I (C:\bin\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5F63DBDC)
-F (.\src\APOS.c)(0x5FA4010E)(--c99 -c --cpu Cortex-M0 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\src -I .\system\stm32f0-stdperiph -I .\src\Devices -I .\src\USB -I .\src\CLibrarys -I .\src\ioLibrary_Driver\Ethernet -I .\src\ioLibrary_Driver\Internet -I .\src\ff12c\src -I .\src\Tasks-IC:\Users\r.hif\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include-IC:\bin\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="532" -DSTM32F072xB -DSTM32F072 -DUSE_STDPERIPH_DRIVER -DUSE_USB_DEVICE_FS -DINTERNAL_PULLUP-o .\output\apos.o --omf_browse .\output\apos.crf --depend .\output\apos.d)
+F (.\src\APOS.c)(0x5FA40234)(--c99 -c --cpu Cortex-M0 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\src -I .\system\stm32f0-stdperiph -I .\src\Devices -I .\src\USB -I .\src\CLibrarys -I .\src\ioLibrary_Driver\Ethernet -I .\src\ioLibrary_Driver\Internet -I .\src\ff12c\src -I .\src\Tasks-IC:\Users\r.hif\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include-IC:\bin\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="532" -DSTM32F072xB -DSTM32F072 -DUSE_STDPERIPH_DRIVER -DUSE_USB_DEVICE_FS -DINTERNAL_PULLUP-o .\output\apos.o --omf_browse .\output\apos.crf --depend .\output\apos.d)
 I (src\Services/StdDef.h)(0x5F8DDB68)
 I (C:\bin\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5F63DBDC)
-I (src\APOS.h)(0x5FA4009E)
-F (.\src\APOS.s)(0x5FA3FCA6)(--cpu Cortex-M0 --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\Users\r.hif\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include-IC:\bin\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 532" --pd "STM32F072xB SETA 1"--list .\listing\apos.lst --xref -o .\output\apos_1.o --depend .\output\apos_1.d)
-F (.\src\APOS.h)(0x5FA4009E)()
+I (src\APOS.h)(0x5FAD3566)
+F (.\src\APOS.s)(0x5FAD32C1)(--cpu Cortex-M0 --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\Users\r.hif\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include-IC:\bin\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 532" --pd "STM32F072xB SETA 1"--list .\listing\apos.lst --xref -o .\output\apos_1.o --depend .\output\apos_1.d)
+F (.\src\APOS.h)(0x5FAD3566)()
 F (.\system\stm32f0-stdperiph\stm32f0xx_adc.c)(0x5F8DDB6A)(--c99 -c --cpu Cortex-M0 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\src -I .\system\stm32f0-stdperiph -I .\src\Devices -I .\src\USB -I .\src\CLibrarys -I .\src\ioLibrary_Driver\Ethernet -I .\src\ioLibrary_Driver\Internet -I .\src\ff12c\src -I .\src\Tasks-IC:\Users\r.hif\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include-IC:\bin\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="532" -DSTM32F072xB -DSTM32F072 -DUSE_STDPERIPH_DRIVER -DUSE_USB_DEVICE_FS -DINTERNAL_PULLUP-o .\output\stm32f0xx_adc.o --omf_browse .\output\stm32f0xx_adc.crf --depend .\output\stm32f0xx_adc.d)
 I (.\src\stm32f0xx_conf.h)(0x5F8DDB68)
 I (.\system\stm32f0-stdperiph\stm32f0xx_adc.h)(0x5F8DDB6A)
@@ -1202,8 +1204,8 @@ I (.\system\stm32f0-stdperiph\stm32f0xx_wwdg.h)(0x5F8DDB6C)
 I (.\system\stm32f0-stdperiph\stm32f0xx_misc.h)(0x5F8DDB6B)
 I (.\src\BSP/systick.h)(0x5F8DDB68)
 I (C:\bin\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5F63DBDC)
-F (.\src\Tasks\TestTask.h)(0x5FA3FDB1)()
-F (.\src\Tasks\TestTask.c)(0x5FA400B7)(--c99 -c --cpu Cortex-M0 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\src -I .\system\stm32f0-stdperiph -I .\src\Devices -I .\src\USB -I .\src\CLibrarys -I .\src\ioLibrary_Driver\Ethernet -I .\src\ioLibrary_Driver\Internet -I .\src\ff12c\src -I .\src\Tasks-IC:\Users\r.hif\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include-IC:\bin\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="532" -DSTM32F072xB -DSTM32F072 -DUSE_STDPERIPH_DRIVER -DUSE_USB_DEVICE_FS -DINTERNAL_PULLUP-o .\output\testtask.o --omf_browse .\output\testtask.crf --depend .\output\testtask.d)
-I (.\src\APOS.h)(0x5FA4009E)
+F (.\src\Tasks\TestTask.h)(0x5FAD3577)()
+F (.\src\Tasks\TestTask.c)(0x5FAD3544)(--c99 -c --cpu Cortex-M0 -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\src -I .\system\stm32f0-stdperiph -I .\src\Devices -I .\src\USB -I .\src\CLibrarys -I .\src\ioLibrary_Driver\Ethernet -I .\src\ioLibrary_Driver\Internet -I .\src\ff12c\src -I .\src\Tasks-IC:\Users\r.hif\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include-IC:\bin\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="532" -DSTM32F072xB -DSTM32F072 -DUSE_STDPERIPH_DRIVER -DUSE_USB_DEVICE_FS -DINTERNAL_PULLUP-o .\output\testtask.o --omf_browse .\output\testtask.crf --depend .\output\testtask.d)
+I (.\src\APOS.h)(0x5FAD3566)
 I (.\src\Services/StdDef.h)(0x5F8DDB68)
 I (C:\bin\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5F63DBDC)

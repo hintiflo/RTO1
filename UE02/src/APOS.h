@@ -24,4 +24,3 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 void APOS_Start(void);  // Starten des Echtzeitbetriebssystems
 void APOS_Scheduler(void);  // OS Scheduler
 						
-						

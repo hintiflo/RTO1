@@ -1,12 +1,6 @@
 
 #include "APOS.h"
 
-void FillTaskA(void)
-{
-
-}
-
-
 void TaskA (void) 
 {
 		FillTaskA();
@@ -20,12 +14,6 @@ void TaskA (void)
 }
 
 
-
-void		FillTaskB(void)
-{
-
-}
-
 void TaskB (void) 
 {
 		FillTaskB();
@@ -38,11 +26,6 @@ void TaskB (void)
 		}
 }
 
-
-void		FillTaskC(void)
-{
-
-}
 
 void TaskC (void) 
 {
