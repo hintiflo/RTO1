@@ -4,16 +4,30 @@
 // #include "TaskAll.h"
 // #include <stdio.h>
 
+// for debugging
+#define DEBUG
+
+typedef void (*Routine)(void);
+
 typedef struct
 {
-	
-		uint32_t stackpointer;
+	uint32_t prio;
+	Routine routine;
+	void * pStack;
+	uint32_t stackSize;
+	uint32_t timeSlice;
+#ifdef DEBUG
+	char * pTaskName
+#endif
 	
 }APOS_TCB_STRUCT;
 
 void APOS_Init(void);  													// Initialisert das Echtzeitbetriebssystem
+
 void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
+#ifdef DEBUG
 						const char* pTaskName, 								// Task Name – nur für Debug-Zwecke
+#endif
 						uint32_t Priority,  									// Priorität des Tasks (vorerst nicht in Verwendung)
 						void (*pRoutine)(void),  							// Startadresse Task (ROM)
 						void * pStack, 												// Startadresse Stack des Tasks (RAM)
