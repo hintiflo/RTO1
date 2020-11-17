@@ -7,8 +7,9 @@
 #include "BSP/systick.h"
 #include "stm32f0xx_gpio.h"
 
-static const uint32_t numTasks = 10;
-static APOS_TCB_STRUCT* pTasks[numTasks];
+static const uint32_t maxTasks = 10;
+static uint32_t numTasks = 0;
+static APOS_TCB_STRUCT* pTasks[maxTasks];
 
 void Debug_TaskOn_A(){	GPIO_WriteBit(GPIOB, GPIO_Pin_5,	Bit_SET);		};
 void Debug_TaskOff_A(){	GPIO_WriteBit(GPIOB, GPIO_Pin_5,	Bit_RESET);	};
@@ -73,7 +74,6 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 						uint32_t TimeSlice  									// Time-Slice für Round Robin Scheduling
 						)
 {
-	static uint32_t currentTask = 0;	
 
 	
 	if(pRoutine == NULL)
@@ -99,8 +99,10 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 	
 	pTask->timeSlice = TimeSlice;
 	
-	if(currentTask < numTasks)
-		pTasks[currentTask] = pTask;
+	if(numTasks < maxTasks) {
+		pTasks[numTasks] = pTask;
+		numTasks++;
+	}
 
 	
 }
@@ -119,12 +121,13 @@ void APOS_Scheduler(void)
 	if(lastTick == 0)
 		lastTick = tick;
 	
-//	setPendSV();
+
 		
 	
 	// exec task
 	while(tick - lastTick < pTasks[currentTask]->timeSlice) {
 		pTasks[currentTask]->routine();
+		tick = Systick_GetTick();
 	}
 	
 	// taskswitch
@@ -133,6 +136,7 @@ void APOS_Scheduler(void)
 	
 	lastTick = Systick_GetTick();
 
+	setPendSV();
 }
 
 void	setPendSV(void)

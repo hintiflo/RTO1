@@ -8,7 +8,7 @@
 /* Exported functions ------------------------------------------------------- */
 void 						Tick_Delay (uint32_t dlyTicks);
 void						Tick_InitSysTick(void);
-void 						SysTick_Handler2 (void);
+void 						SysTick_Handler (void);
 int 						Systick_GetTick(void);
 
 #endif /* __TICK_H */
