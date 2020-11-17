@@ -7,8 +7,11 @@
 #include "BSP/systick.h"
 #include "stm32f0xx_gpio.h"
 
+#define DEBUG
+
 static const uint32_t maxTasks = 10;
 static uint32_t numTasks = 0;
+static uint32_t currentTask = 0;
 static APOS_TCB_STRUCT* pTasks[maxTasks];
 
 void Debug_TaskOn_A(){	GPIO_WriteBit(GPIOB, GPIO_Pin_5,	Bit_SET);		};
@@ -69,7 +72,7 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 #endif
 						uint32_t Priority,  									// Priorität des Tasks (vorerst nicht in Verwendung)
 						void (*pRoutine)(void),  							// Startadresse Task (ROM)
-						void * pStack, 												// Startadresse Stack des Tasks (RAM)
+						void* pStack, 												// Startadresse Stack des Tasks (RAM)
 						uint32_t StackSize,  									// Größe des Stacks
 						uint32_t TimeSlice  									// Time-Slice für Round Robin Scheduling
 						)
@@ -92,10 +95,10 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 	
 	pTask->prio = Priority;
 	pTask->routine = pRoutine;
-	if(pStack == NULL)
-		pTask->pStack = calloc(sizeof(uint8_t), StackSize);
-	else
-		pTask->pStack = pStack;
+//	if(pStack == NULL)
+//		pTask->pStack = calloc(sizeof(uint8_t), StackSize);
+//	else
+		pTask->pStack = (uint32_t)pStack;
 	
 	pTask->timeSlice = TimeSlice;
 	
@@ -109,6 +112,8 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 
 void APOS_Start(void)  // Starten des Echtzeitbetriebssystems
 {
+	APOS_SetPSP();
+	__set_CONTROL(1);
 	while(1)
 		APOS_Scheduler();
 }
@@ -116,27 +121,30 @@ void APOS_Start(void)  // Starten des Echtzeitbetriebssystems
 void APOS_Scheduler(void)
 {
 	static int lastTick = 0;
-	static uint32_t currentTask;
+
 	int tick = Systick_GetTick();
 	if(lastTick == 0)
 		lastTick = tick;
 	
 
-		
 	
-	// exec task
-	while(tick - lastTick < pTasks[currentTask]->timeSlice) {
-		pTasks[currentTask]->routine();
-		tick = Systick_GetTick();
-	}
-	
-	// taskswitch
-	currentTask++;
-	currentTask %= numTasks;
-	
-	lastTick = Systick_GetTick();
 
-	setPendSV();
+	
+	// switch task
+	if((tick - lastTick) >= pTasks[currentTask]->timeSlice) {
+		currentTask++;
+		currentTask %= numTasks;
+		lastTick = Systick_GetTick();
+		setPendSV();
+	} else { // exec task
+		pTasks[currentTask]->routine();
+	}
+
+}
+
+void APOS_SetPSP(void)
+{
+	__set_PSP(pTasks[currentTask]->pStack);
 }
 
 void	setPendSV(void)

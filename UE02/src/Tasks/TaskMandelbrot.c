@@ -10,15 +10,20 @@
 #define ImageWidth  150
 #define OFFSET			150
 
-#define INTERVAL_MANDEL 400
-
-static unsigned von = 0;
-static unsigned bis = ImageHeight/INTERVAL_MANDEL;
-static unsigned intervalCnt = 0;
-
 
 static void MandelBrot (void)
 {
+	static unsigned y = 0;
+	static unsigned x = 0;
+	static unsigned n = 0;
+	static unsigned char isInside = TRUE;
+	static double c_im = 0.0;
+	static double c_re = 0.0;
+	static double Z_re = 0.0;
+	static double Z_im = 0.0;
+	static double Z_re2 = 0.0;
+	static double Z_im2 = 0.0;
+	
 	double MinRe = -2.0;
 	double MaxRe = 1.0;
 	double MinIm = -1.2;
@@ -27,50 +32,58 @@ static void MandelBrot (void)
 	double Im_factor = (MaxIm-MinIm)/(ImageHeight-1);
 	unsigned MaxIterations = 30;
 
-	static uint32_t lastTick = 0;
-	uint32_t tick = Systick_GetTick();
 
-	unsigned y = von; 
-	// bis = ImageHeight/INTERVAL_MANDEL;
-	
-	while(y<ImageHeight)
-	{		
-		y++;
-			
-			double c_im = MaxIm - y*Im_factor;
-			for(unsigned x=0; x<ImageWidth; ++x)
+	if(y<ImageHeight)
+	{
+			if(x == 0 && n == 0)
+				c_im = MaxIm - y*Im_factor;
+
+			if(x<ImageWidth)
 			{
-				unsigned char isInside = TRUE;
-
-				double c_re = MinRe + x*Re_factor;
-
-					double Z_re = c_re, Z_im = c_im;
-					isInside = TRUE;
-					for(unsigned n=0; n<MaxIterations; ++n)
+				if(n == 0) {
+					c_re = MinRe + x*Re_factor;
+					Z_re = c_re, Z_im = c_im;
+				}
+					if(n<MaxIterations)
 					{
-							double Z_re2 = Z_re*Z_re, Z_im2 = Z_im*Z_im;
+							Z_re2 = Z_re*Z_re, Z_im2 = Z_im*Z_im;
 							if(Z_re2 + Z_im2 > 4)
 							{
 									isInside = FALSE;
-									break;
+									n = MaxIterations; // break iterations
+							} else {
+								Z_im = 2*Z_re*Z_im + c_im;
+								Z_re = Z_re2 - Z_im2 + c_re;
+								n++;
 							}
-							Z_im = 2*Z_re*Z_im + c_im;
-							Z_re = Z_re2 - Z_im2 + c_re;
+
+					} else {
+						if(isInside) { 
+						Tft_DrawPixel(y, x + OFFSET);
+						}
+						isInside = TRUE;
+						x++;
+						n = 0;
 					}
-				
-				if(isInside) { Tft_DrawPixel(y, x + OFFSET); }
+			} else {
+				x = 0;
+				y++;
+				c_im = MaxIm - y*Im_factor;
 			}
-			if(y > bis)			
-			{
-				intervalCnt++;
-				von = bis;
-				bis = intervalCnt*ImageHeight/INTERVAL_MANDEL;
-				break;				
-			}
+	} else {
+		y = 0;
 	}
 }
 
+
 void TaskMandelbrot (void)
-{	Tft_DrawString(10, 18+5*24, "ManBr ");
+{
+	static char first = TRUE;
+	if(first) {
+		Tft_DrawString(10, 18+5*24, "ManBr ");
+		first = FALSE;
+	}
+	
 	MandelBrot();	
+//	OrigMandelBrot();
 }

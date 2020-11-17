@@ -13,7 +13,6 @@
 
 #include <stdio.h>
 
-
 // Abstraction of GPIO-Manipulations into LED-Functions
 static void setSysTickLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_0,	Bit_SET);}
 static void resSysTickLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_0,	Bit_RESET);}
@@ -81,7 +80,7 @@ static void tryGPIO()
 }
 
 void GPIO_setup( void );
-	
+
 	
 int main(void)
 {
@@ -89,11 +88,27 @@ int main(void)
 	APOS_TCB_STRUCT	TASKA;
 	APOS_TCB_STRUCT	TASKB;
 	APOS_TCB_STRUCT	TASKC;
-
-	APOS_TASK_Create(&TASKA, "TaskA", 1, FillTaskA, 0, 4321, 54321);
-	APOS_TASK_Create(&TASKB, "TaskB", 1, FillTaskB, 0, 4321, 54321);
-	APOS_TASK_Create(&TASKC, "TaskC", 1, FillTaskC, 0, 4321, 54321);
-
+	APOS_TCB_STRUCT	TASKD;
+	APOS_TCB_STRUCT	TASKE;
+	APOS_TCB_STRUCT	TASKF;
+	
+	uint32_t stackTaskA[100];
+	uint32_t stackTaskB[100];
+	uint32_t stackTaskC[100];
+	uint32_t stackTaskD[100];
+	uint32_t stackTaskE[100];
+	uint32_t stackTaskF[100];
+	
+//	APOS_TASK_Create(&TASKA, "TaskA", 1, FillTaskA, stackTaskA, sizeof(stackTaskA), 10);
+//	APOS_TASK_Create(&TASKB, "TaskB", 1, FillTaskB, stackTaskB, sizeof(stackTaskB), 10);
+//	APOS_TASK_Create(&TASKC, "TaskC", 1, FillTaskC, stackTaskC, sizeof(stackTaskC), 10);
+	
+	APOS_TASK_Create(&TASKA, "TaskA", 1, TaskCounter, stackTaskA, sizeof(stackTaskA), 10);
+	APOS_TASK_Create(&TASKB, "TaskB", 1, TaskKey, stackTaskB, sizeof(stackTaskB), 10);
+	APOS_TASK_Create(&TASKC, "TaskC", 1, TaskLed, stackTaskC, sizeof(stackTaskC), 10);
+	APOS_TASK_Create(&TASKD, "TaskD", 1, TaskWatch, stackTaskD, sizeof(stackTaskD), 10);
+	APOS_TASK_Create(&TASKE, "TaskE", 1, TaskPoti, stackTaskE, sizeof(stackTaskE), 10);
+	APOS_TASK_Create(&TASKF, "TaskF", 1, TaskMandelbrot, stackTaskF, sizeof(stackTaskF), 100);
 	
   Key_Init();
   Led_Init();
@@ -133,7 +148,7 @@ int main(void)
 
 	
 	
-	
+	APOS_Start();
   while (1)
   {	
 

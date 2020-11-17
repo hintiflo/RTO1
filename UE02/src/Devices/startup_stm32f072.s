@@ -38,7 +38,7 @@
 ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
 
-Stack_Size      EQU     0x00000400
+Stack_Size      EQU     0x0000800
 
                 AREA    STACK, NOINIT, READWRITE, ALIGN=3
 Stack_Mem       SPACE   Stack_Size
@@ -49,7 +49,7 @@ __initial_sp
 ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
 
-Heap_Size       EQU     0x00000200
+Heap_Size       EQU     0x00000800
 
                 AREA    HEAP, NOINIT, READWRITE, ALIGN=3
 __heap_base
@@ -151,25 +151,41 @@ SVC_Handler     PROC
                 ENDP
 PendSV_Handler  PROC
                 EXPORT  PendSV_Handler                 [WEAK]
+	
 ;                B       .				; infinite loop, deactivated
-				mrs r0, msp
-				mrs r1, psp
-				msr msp, r1
-;				push r11
-;				push r10
-;				push r9
-;				push r8
-;				push r7
-;				push r6
-;				push r5
-;				push r4
+				mrs r0, psp
+				stm r0!, {r4-r7}
+				mov r4, r8
+				mov r5, r9
+				mov r6, r10
+				mov r7, r11
+				stm r0!, {r4-r7}
+				mov r5, r14
+				IMPORT  APOS_SetPSP
+                LDR     R0, =APOS_SetPSP
+                BLX     R0
+				mov r14, r5
+				adds r0, r0, #16
+				ldm r0!, {r4-r7}
+				mov r8, r4
+				mov r9, r5
+				mov r10, r6
+				mov r11, r7
+				subs r0, r0, #32
+				ldm r0!, {r4-r7}
+                BX     LR
+;set psp auf Taskb, bzw aufn nächsten Task
+; LR sichern
+; C Funktion: nächsten TaskB
+; LR zurückholen
+; R 4 5 6 7 8 9 10 11
 ;				SCB->ICSR &= ~SCB_ICSR_PENDSVSET_Msk;	// finally cealr PendSV
+				BX		LR
                 ENDP
 SysTick_Handler PROC
                 EXPORT  SysTick_Handler                [WEAK]
                 B       .
                 ENDP
-
 Default_Handler PROC
 
                 EXPORT  WWDG_IRQHandler                [WEAK]

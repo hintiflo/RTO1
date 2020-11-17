@@ -40,7 +40,7 @@ typedef struct
 {
 	uint32_t prio;
 	Routine routine;
-	void * pStack;
+	uint32_t pStack;
 	uint32_t stackSize;
 	uint32_t timeSlice;
 #ifdef DEBUG
@@ -60,7 +60,7 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 #endif
 						uint32_t Priority,  									// Priorität des Tasks (vorerst nicht in Verwendung)
 						void (*pRoutine)(void),  							// Startadresse Task (ROM)
-						void * pStack, 												// Startadresse Stack des Tasks (RAM)
+						void* pStack, 												// Startadresse Stack des Tasks (RAM)
 						uint32_t StackSize,  									// Größe des Stacks
 						uint32_t TimeSlice  									// Time-Slice für Round Robin Scheduling
 						);
@@ -70,6 +70,6 @@ void APOS_Scheduler(void);  // OS Scheduler
 // ...um den Task-Switch zu triggern. Das Triggern des Task-Switchs erfolgt durch Setzen des 
 // PEND-SV Interrupt Pending Bits. Der Task-Switch wird im PendSV_Handler programmiert.
 // Die Priorität des PendSV_Handler soll auf den geringsten Wert eingestellt werden
-
+void APOS_SetPSP(void);
 						
 #endif // __APOS
