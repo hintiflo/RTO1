@@ -583,9 +583,9 @@ PendSV_Handler (void)
 #if defined(DEBUG)
   __DEBUG_BKPT();
 #endif
-  while (1)
-    {
-    }
+//original:  while (1)
+//original:    {
+//original:    }
 }
 
 void __attribute__ ((section(".after_vectors"),weak))

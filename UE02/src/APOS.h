@@ -1,3 +1,7 @@
+#ifndef __APOS
+#define __APOS
+
+
 #include "Services/StdDef.h"
 // #include "BSP/systick.h"
 // #include "stm32f0xx_gpio.h"
@@ -8,6 +12,29 @@
 #define DEBUG
 
 typedef void (*Routine)(void);
+
+
+// Schritt 1:
+void TaskA(void);
+void TaskB(void);
+void TaskC(void);
+void FillTaskA(void);
+void FillTaskB(void);
+void FillTaskC(void);
+
+// set the PendSV to trigger a task Switch
+void	setPendSV(void);
+
+
+// Schritt 4:
+
+// void APOS_EnterRegion(){};
+// void APOS_LeaveRegion(){}; 
+// void APOS_TestRegion(){};
+
+// Schritt 5:
+// void APOS_Delay (uint32_t ticks){};
+	 
 
 typedef struct
 {
@@ -24,6 +51,9 @@ typedef struct
 
 void APOS_Init(void);  													// Initialisert das Echtzeitbetriebssystem
 
+
+
+
 void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 #ifdef DEBUG
 						const char* pTaskName, 								// Task Name – nur für Debug-Zwecke
@@ -37,4 +67,9 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 
 void APOS_Start(void);  // Starten des Echtzeitbetriebssystems
 void APOS_Scheduler(void);  // OS Scheduler
+// ...um den Task-Switch zu triggern. Das Triggern des Task-Switchs erfolgt durch Setzen des 
+// PEND-SV Interrupt Pending Bits. Der Task-Switch wird im PendSV_Handler programmiert.
+// Die Priorität des PendSV_Handler soll auf den geringsten Wert eingestellt werden
+
 						
+#endif // __APOS

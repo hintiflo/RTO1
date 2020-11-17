@@ -79,12 +79,22 @@ static void tryGPIO()
 		sleep();
 	}
 }
+
 void GPIO_setup( void );
 	
 	
 int main(void)
 {
 
+	APOS_TCB_STRUCT	TASKA;
+	APOS_TCB_STRUCT	TASKB;
+	APOS_TCB_STRUCT	TASKC;
+
+	APOS_TASK_Create(&TASKA, "TaskA", 1, FillTaskA, 0, 4321, 54321);
+	APOS_TASK_Create(&TASKB, "TaskB", 1, FillTaskB, 0, 4321, 54321);
+	APOS_TASK_Create(&TASKC, "TaskC", 1, FillTaskC, 0, 4321, 54321);
+
+	
   Key_Init();
   Led_Init();
   Tft_Init();
@@ -126,7 +136,11 @@ int main(void)
 	
   while (1)
   {	
-		FillTaskA();
+
+
+		// FillTaskA();
+		TaskA();
+		
 		FillTaskB();
 		FillTaskC();
 

@@ -151,7 +151,19 @@ SVC_Handler     PROC
                 ENDP
 PendSV_Handler  PROC
                 EXPORT  PendSV_Handler                 [WEAK]
-                B       .
+;                B       .				; infinite loop, deactivated
+				mrs r0, msp
+				mrs r1, psp
+				msr msp, r1
+;				push r11
+;				push r10
+;				push r9
+;				push r8
+;				push r7
+;				push r6
+;				push r5
+;				push r4
+;				SCB->ICSR &= ~SCB_ICSR_PENDSVSET_Msk;	// finally cealr PendSV
                 ENDP
 SysTick_Handler PROC
                 EXPORT  SysTick_Handler                [WEAK]
