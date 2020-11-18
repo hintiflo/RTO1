@@ -25,8 +25,13 @@ static uint32_t msTicks;      		// Counts 1ms timeTicks
 * Parameters: (none)
 * Return:     (none)
 *----------------------------------------------------------------------------*/
-void SysTick_Handler (void)  {
+void SysTick_Handler (void)  
+{
 	// GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_SET);
+	
+	// Angabe Schritt 4
+	// Versuchsweises auslösen des PendSV Handlers je sysTick
+	// SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
   msTicks++;                                    // increment Tick-counter
 	// GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_RESET);
 

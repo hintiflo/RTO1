@@ -22,9 +22,13 @@ static void copyTasks(APOS_TCB_STRUCT** source, APOS_TCB_STRUCT** dest, uint32_t
 }
 
 void APOS_Init(void)  													// Initialisert das Echtzeitbetriebssystem
-{	for(int i = 0; i < numTasks; i++) 
-	{	pTasks[i] = NULL;
+{	
+	NVIC_SetPriority(PendSV_IRQn, 0xF0 );					// höchster Wert: kleinste Prio
+																								// 0xF im oberen nibble: 0b11110000
+	for(int i = 0; i < numTasks; i++) 
+	{		pTasks[i] = NULL;
 	}
+	
 }
 
 void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock

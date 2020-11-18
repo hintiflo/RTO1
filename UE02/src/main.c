@@ -43,6 +43,8 @@ void GPIO_setup( void );
 int main(void)
 {
 
+	APOS_Init();
+
 	APOS_TCB_STRUCT	TASKA;
 	APOS_TCB_STRUCT	TASKB;
 	APOS_TCB_STRUCT	TASKC;
@@ -77,40 +79,41 @@ int main(void)
 	
 	// tryGPIO();
 	
+	
 	APOS_Start();
 
 
-#if 0		// code ab hier is obsolet
-	while (0)
-  {	setSysTickLED();
+	#if 0		// code ab hier is obsolet
+		while (0)
+		{	setSysTickLED();
 
-		setCounterLED();
-		TaskCounter();
-		resCounterLED();
-		
-		setKeyLED();
-		TaskKey();
-		resKeyLED();
+			setCounterLED();
+			TaskCounter();
+			resCounterLED();
+			
+			setKeyLED();
+			TaskKey();
+			resKeyLED();
 
-		setLedLED();
-		TaskLed();	
-		resLedLED();
+			setLedLED();
+			TaskLed();	
+			resLedLED();
 
-		setWatchLED();
-		TaskWatch();
-		resWatchLED();
+			setWatchLED();
+			TaskWatch();
+			resWatchLED();
 
-		setPotiLED();
-		TaskPoti();	
-		resPotiLED();
+			setPotiLED();
+			TaskPoti();	
+			resPotiLED();
 
-		 setMandelbrotLED();
-		 TaskMandelbrot();		
-		 resMandelbrotLED();		
+			 setMandelbrotLED();
+			 TaskMandelbrot();		
+			 resMandelbrotLED();		
 
-		resSysTickLED();
-  }
-#endif
+			resSysTickLED();
+		}
+	#endif
 	return 0;
 }	//	int main(void)
 
