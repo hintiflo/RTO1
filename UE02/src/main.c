@@ -16,24 +16,18 @@
 // Abstraction of GPIO-Manipulations into LED-Functions
 static void setSysTickLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_0,	Bit_SET);}
 static void resSysTickLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_0,	Bit_RESET);}
-
 static void setCounterLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_1,	Bit_SET);}
 static void resCounterLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_1,	Bit_RESET);}
-
-static void setKeyLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_3,	Bit_SET);}
-static void resKeyLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_3,	Bit_RESET);}
-
-static void setLedLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_12,	Bit_SET);}	
-static void resLedLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_12,	Bit_RESET);}	
-
-static void setWatchLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_13,	Bit_SET);}
-static void resWatchLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_13,	Bit_RESET);}
-
-static void setPotiLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_14,	Bit_SET);}	
-static void resPotiLED()		{	GPIO_WriteBit(GPIOB, GPIO_Pin_14,	Bit_RESET);}	
-
-static void setMandelbrotLED()	{	GPIO_WriteBit(GPIOB, GPIO_Pin_15,	Bit_SET);}		
-static void resMandelbrotLED()	{	GPIO_WriteBit(GPIOB, GPIO_Pin_15,	Bit_RESET);}		
+static void setKeyLED()				{	GPIO_WriteBit(GPIOB, GPIO_Pin_3,	Bit_SET);}
+static void resKeyLED()				{	GPIO_WriteBit(GPIOB, GPIO_Pin_3,	Bit_RESET);}
+static void setLedLED()				{	GPIO_WriteBit(GPIOB, GPIO_Pin_12,	Bit_SET);}	
+static void resLedLED()				{	GPIO_WriteBit(GPIOB, GPIO_Pin_12,	Bit_RESET);}	
+static void setWatchLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_13,	Bit_SET);}
+static void resWatchLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_13,	Bit_RESET);}
+static void setPotiLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_14,	Bit_SET);}	
+static void resPotiLED()			{	GPIO_WriteBit(GPIOB, GPIO_Pin_14,	Bit_RESET);}	
+static void setMandelbrotLED(){	GPIO_WriteBit(GPIOB, GPIO_Pin_15,	Bit_SET);}		
+static void resMandelbrotLED(){	GPIO_WriteBit(GPIOB, GPIO_Pin_15,	Bit_RESET);}		
 
 
 static void sleep()
@@ -41,6 +35,85 @@ static void sleep()
 	for(int i = 0; i<10000; i++)
 		__NOP;
 }
+
+static void tryGPIO();		// helper func for wiring the analyzer
+void GPIO_setup( void );
+
+	
+int main(void)
+{
+
+	APOS_TCB_STRUCT	TASKA;
+	APOS_TCB_STRUCT	TASKB;
+	APOS_TCB_STRUCT	TASKC;
+	APOS_TCB_STRUCT	TASKD;
+	APOS_TCB_STRUCT	TASKE;
+	APOS_TCB_STRUCT	TASKF;
+	
+	uint32_t stackTaskA[100];
+	uint32_t stackTaskB[100];
+	uint32_t stackTaskC[100];
+	uint32_t stackTaskD[100];
+	uint32_t stackTaskE[100];
+	uint32_t stackTaskF[100];
+	
+	APOS_TASK_Create(&TASKA, "TaskA", 1, TaskCounter, stackTaskA, sizeof(stackTaskA), 10);
+	APOS_TASK_Create(&TASKB, "TaskB", 1, TaskKey, stackTaskB, sizeof(stackTaskB), 10);
+	APOS_TASK_Create(&TASKC, "TaskC", 1, TaskLed, stackTaskC, sizeof(stackTaskC), 10);
+	APOS_TASK_Create(&TASKD, "TaskD", 1, TaskWatch, stackTaskD, sizeof(stackTaskD), 10);
+	APOS_TASK_Create(&TASKE, "TaskE", 1, TaskPoti, stackTaskE, sizeof(stackTaskE), 10);
+	APOS_TASK_Create(&TASKF, "TaskF", 1, TaskMandelbrot, stackTaskF, sizeof(stackTaskF), 100);
+	
+  Key_Init();
+  Led_Init();
+  Tft_Init();
+  Tft_SetFont(&TftFont_16x24);
+	Tft_ClearScreen();	
+  Adc_Init(ADC_CHANNEL_POTENTIOMETER);	
+	
+	Tick_InitSysTick();
+	
+	GPIO_setup();
+	
+	// tryGPIO();
+	
+	APOS_Start();
+
+
+#if 0		// code ab hier is obsolet
+	while (0)
+  {	setSysTickLED();
+
+		setCounterLED();
+		TaskCounter();
+		resCounterLED();
+		
+		setKeyLED();
+		TaskKey();
+		resKeyLED();
+
+		setLedLED();
+		TaskLed();	
+		resLedLED();
+
+		setWatchLED();
+		TaskWatch();
+		resWatchLED();
+
+		setPotiLED();
+		TaskPoti();	
+		resPotiLED();
+
+		 setMandelbrotLED();
+		 TaskMandelbrot();		
+		 resMandelbrotLED();		
+
+		resSysTickLED();
+  }
+#endif
+	return 0;
+}	//	int main(void)
+
 
 
 // sequential setting/resetting of GPIOs to help during wiring of the logic analyzer
@@ -79,133 +152,8 @@ static void tryGPIO()
 	}
 }
 
-void GPIO_setup( void );
-
-	
-int main(void)
-{
-
-	APOS_TCB_STRUCT	TASKA;
-	APOS_TCB_STRUCT	TASKB;
-	APOS_TCB_STRUCT	TASKC;
-	APOS_TCB_STRUCT	TASKD;
-	APOS_TCB_STRUCT	TASKE;
-	APOS_TCB_STRUCT	TASKF;
-	
-	uint32_t stackTaskA[100];
-	uint32_t stackTaskB[100];
-	uint32_t stackTaskC[100];
-	uint32_t stackTaskD[100];
-	uint32_t stackTaskE[100];
-	uint32_t stackTaskF[100];
-	
-//	APOS_TASK_Create(&TASKA, "TaskA", 1, FillTaskA, stackTaskA, sizeof(stackTaskA), 10);
-//	APOS_TASK_Create(&TASKB, "TaskB", 1, FillTaskB, stackTaskB, sizeof(stackTaskB), 10);
-//	APOS_TASK_Create(&TASKC, "TaskC", 1, FillTaskC, stackTaskC, sizeof(stackTaskC), 10);
-	
-	APOS_TASK_Create(&TASKA, "TaskA", 1, TaskCounter, stackTaskA, sizeof(stackTaskA), 10);
-	APOS_TASK_Create(&TASKB, "TaskB", 1, TaskKey, stackTaskB, sizeof(stackTaskB), 10);
-	APOS_TASK_Create(&TASKC, "TaskC", 1, TaskLed, stackTaskC, sizeof(stackTaskC), 10);
-	APOS_TASK_Create(&TASKD, "TaskD", 1, TaskWatch, stackTaskD, sizeof(stackTaskD), 10);
-	APOS_TASK_Create(&TASKE, "TaskE", 1, TaskPoti, stackTaskE, sizeof(stackTaskE), 10);
-	APOS_TASK_Create(&TASKF, "TaskF", 1, TaskMandelbrot, stackTaskF, sizeof(stackTaskF), 100);
-	
-  Key_Init();
-  Led_Init();
-  Tft_Init();
-  Tft_SetFont(&TftFont_16x24);
-	Tft_ClearScreen();	
-  Adc_Init(ADC_CHANNEL_POTENTIOMETER);	
-	
-	Tick_InitSysTick();
-	
-	GPIO_setup();
-	
-	// tryGPIO();
-	
-	// Hinweise von Langer aus der letzten Ü:
-//	PSP porcess stack pointer
-//	MSP master stack pointer
-//	PndSV interrupt for context switch
-//	pTask enthält zB stackpointer
-//	TimeSlice = wieviel Slices möcht ich für den Task
-// bei HardFaults: Stack, Speicher, Register anschauen, Screenshots machen beim Debuggen, wie is vorher/nacher
-//	sysTick auf 1 ms
-//	sysTick setzt PenSV (handelt auch Interrupts, die ich nicht behandle zB SPIs oä)
-//	-> interrupt
-//	-> APUS Scheduler
-	
-//	Context Switch, sichern:
-//		SPH SPL
-//		Register R4...R11
-//		PC
-	
-//	befüllen:
-//		xPSR 						enthält zB T-Switch
-//		ProgramCounter	zum rückspringen
-	
-	// 0xFFFFFFFD ins LR beim rücksprung?
-
-	
-	
-	APOS_Start();
-  while (1)
-  {	
-
-
-		// FillTaskA();
-		TaskA();
-		
-		FillTaskB();
-		FillTaskC();
-
-		setSysTickLED();
-
-		setCounterLED();
-		TaskCounter();
-		resCounterLED();
-		
-		setKeyLED();
-		TaskKey();
-		resKeyLED();
-
-		setLedLED();
-		TaskLed();	
-		resLedLED();
-
-		setWatchLED();
-		TaskWatch();
-		resWatchLED();
-
-		setPotiLED();
-		TaskPoti();	
-		resPotiLED();
-
-
-		 setMandelbrotLED();
-		 TaskMandelbrot();		
-		 resMandelbrotLED();		
-
-		resSysTickLED();
-  }
-}
-
-
-// void TaskA (void) 
-// {
-// 	FillTaskA();
-// 	// while (1) 
-// 	// { Debug_TaskOn_A();
-// 		// enter Code
-// 		// Debug_TaskOff_A();
-// 		// APOS_Scheduler();
-// 	// 	}
-// }
-
 void GPIO_setup( void )
 {
-
-	
 	/* Enable clock for LED gpio port registers */
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
 
@@ -218,7 +166,6 @@ void GPIO_setup( void )
   gpioInit.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
 
   GPIO_Init(GPIOB, &gpioInit);
-  
 }
 
 /* #define NDEBUG to ignore all asserts */

@@ -43,21 +43,18 @@ typedef struct
 	uint32_t pStack;
 	uint32_t stackSize;
 	uint32_t timeSlice;
-#ifdef DEBUG
+ #ifdef DEBUG
 	char * pTaskName;
-#endif
+ #endif
 	
 }APOS_TCB_STRUCT;
 
 void APOS_Init(void);  													// Initialisert das Echtzeitbetriebssystem
 
-
-
-
 void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
-#ifdef DEBUG
+					#ifdef DEBUG
 						const char* pTaskName, 								// Task Name – nur für Debug-Zwecke
-#endif
+					#endif
 						uint32_t Priority,  									// Priorität des Tasks (vorerst nicht in Verwendung)
 						void (*pRoutine)(void),  							// Startadresse Task (ROM)
 						void* pStack, 												// Startadresse Stack des Tasks (RAM)
@@ -67,9 +64,6 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 
 void APOS_Start(void);  // Starten des Echtzeitbetriebssystems
 void APOS_Scheduler(void);  // OS Scheduler
-// ...um den Task-Switch zu triggern. Das Triggern des Task-Switchs erfolgt durch Setzen des 
-// PEND-SV Interrupt Pending Bits. Der Task-Switch wird im PendSV_Handler programmiert.
-// Die Priorität des PendSV_Handler soll auf den geringsten Wert eingestellt werden
 void APOS_SetPSP(void);
 						
 #endif // __APOS
