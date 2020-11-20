@@ -33,7 +33,8 @@ int	 APOS_TestRegion(void);
 
 // Schritt 5:
 void APOS_Delay (uint32_t ticks);
-	 
+
+typedef enum { RUNNING, SUSPENDED }APUS_TASK_STATUS;
 
 typedef struct
 {
@@ -42,6 +43,9 @@ typedef struct
 	uint32_t* pStack;
 	uint32_t stackSize;
 	uint32_t timeSlice;
+	uint32_t delay;
+	uint32_t statusTime;
+	APUS_TASK_STATUS status;
  #ifdef DEBUG
 	char * pTaskName;
  #endif
@@ -64,5 +68,7 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 void APOS_Start(void);  // Starten des Echtzeitbetriebssystems
 void APOS_Scheduler(void);  // OS Scheduler
 void APOS_SetPSP(void);
+void APOS_Delay(uint32_t ticks);
+
 						
 #endif // __APOS

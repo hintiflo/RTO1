@@ -20,6 +20,8 @@ static void copyTasks(APOS_TCB_STRUCT** source, APOS_TCB_STRUCT** dest, uint32_t
 	{	(*dest)[i] = (*source)[i];
 	}
 }
+
+static BOOL APOS_Running(void);
  
 void APOS_Init(void)  													// Initialisert das Echtzeitbetriebssystem
 {	
@@ -79,6 +81,9 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 	pTask->pStack = pStack;
 	pTask->timeSlice = TimeSlice;
 	pTask->stackSize = StackSize / 4;
+	pTask->status = RUNNING;
+	pTask->statusTime = Systick_GetTick();
+	pTask->delay = 0;
 	APOS_STACK_INIT(pTask);
 	if(numTasks < maxTasks) {												
 		pTasks[numTasks] = pTask;											// in der Task-Liste eintragen
@@ -104,7 +109,7 @@ void APOS_Scheduler(void)
 			lastTick = tick;
 		
 		
-			if((tick - lastTick) >= pTasks[currentTask]->timeSlice) // wenn timeSlice des aktuellen abgelaufen, dann
+			if((tick - lastTick) >= pTasks[currentTask]->timeSlice || !APOS_Running()) // wenn timeSlice des aktuellen abgelaufen, dann
 		//if((tick - lastTick) > 0) 										// wenn SysTick erhöht wurde
 		{	currentTask++;															// auf nächsten Task schalten
 			currentTask %= numTasks;
@@ -112,7 +117,7 @@ void APOS_Scheduler(void)
 			setPendSV();																// PendSV Handler auslösen
 		} else 
 		{	
-			pTasks[currentTask]->routine();	 						// akutelle Task-Funktion callen
+				pTasks[currentTask]->routine();	 						// akutelle Task-Funktion callen
 		}
 	}
 }
@@ -151,15 +156,25 @@ int APOS_TestRegion()	// ob priority mask der IRQs gesetzt wurde
 }	
 
 void APOS_Delay (uint32_t ticks)
-{	static int prevTick = 0;
-	int tick = Systick_GetTick();
-	if(prevTick == 0)
-		prevTick = tick;
-	
-	while((tick - prevTick) < ticks)
-	{
-		__NOP;
-	}
-
+{	
+	pTasks[currentTask]->status = SUSPENDED;
+	pTasks[currentTask]->delay = ticks;
+	pTasks[currentTask]->statusTime = Systick_GetTick();
 }
 
+static BOOL APOS_Running(void) {
+	switch(pTasks[currentTask]->status) {
+		case RUNNING:
+			return TRUE;
+			break;
+		case SUSPENDED:
+			if((Systick_GetTick() - pTasks[currentTask]->statusTime) > pTasks[currentTask]->delay) {
+				pTasks[currentTask]->status = RUNNING;
+				pTasks[currentTask]->statusTime = Systick_GetTick();
+				pTasks[currentTask]->delay = 0;
+				return TRUE;
+			}
+			return FALSE;
+			break;
+	}
+}
