@@ -39,7 +39,7 @@ typedef struct
 {
 	uint32_t prio;
 	Routine routine;
-	uint32_t pStack;
+	uint32_t* pStack;
 	uint32_t stackSize;
 	uint32_t timeSlice;
  #ifdef DEBUG
@@ -56,7 +56,7 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 					#endif
 						uint32_t Priority,  									// Priorität des Tasks (vorerst nicht in Verwendung)
 						void (*pRoutine)(void),  							// Startadresse Task (ROM)
-						void* pStack, 												// Startadresse Stack des Tasks (RAM)
+						uint32_t* pStack, 												// Startadresse Stack des Tasks (RAM)
 						uint32_t StackSize,  									// Größe des Stacks
 						uint32_t TimeSlice  									// Time-Slice für Round Robin Scheduling
 						);

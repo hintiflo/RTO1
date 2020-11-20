@@ -163,7 +163,8 @@ PendSV_Handler  PROC
                 LDR     R0, =APOS_SetPSP	; call C-Function
                 BLX     R0					; to set psp for next Task
 				mov r14, r5					; get LR back from R5
-				adds r0, r0, #16
+				mrs r0, psp
+				subs r0, r0, #16
 				ldm r0!, {r4-r7}
 				mov r8, r4
 				mov r9, r5

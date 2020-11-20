@@ -38,6 +38,17 @@ void APOS_Init(void)  													// Initialisert das Echtzeitbetriebssystem
 	
 }
 
+static void APOS_STACK_INIT(APOS_TCB_STRUCT* pTask)
+{
+	pTask->pStack[7] = 0x01000000; // xPSR ( thumb mode )
+	pTask->pStack[6] = (uint32_t)pTask->routine; // PC
+	pTask->pStack[5] = (uint32_t)APOS_Scheduler; // LR
+	for(int i = 0; i < 5; i++)
+	{
+		pTask->pStack[i] = i+1; // r12, r3, r2, r1, r0
+	}
+	//pTask->pStack = pTask->pStack + 7;
+}
 
 void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 					#ifdef DEBUG
@@ -45,7 +56,7 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 					#endif
 						uint32_t Priority,  									// Priorität des Tasks (vorerst nicht in Verwendung)
 						void (*pRoutine)(void),  							// Startadresse Task (ROM)
-						void* pStack, 												// Startadresse Stack des Tasks (RAM)
+						uint32_t* pStack, 												// Startadresse Stack des Tasks (RAM)
 						uint32_t StackSize,  									// Größe des Stacks
 						uint32_t TimeSlice  									// Time-Slice für Round Robin Scheduling
 						)
@@ -65,9 +76,10 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 	#endif
 	pTask->prio = Priority;													// Task-Daten in den control block übernehmen
 	pTask->routine = pRoutine;
-	pTask->pStack = (uint32_t)pStack;
+	pTask->pStack = pStack;
 	pTask->timeSlice = TimeSlice;
-	
+	pTask->stackSize = StackSize;
+	APOS_STACK_INIT(pTask);
 	if(numTasks < maxTasks) {												
 		pTasks[numTasks] = pTask;											// in der Task-Liste eintragen
 		numTasks++;
@@ -77,33 +89,36 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 void APOS_Start(void)  														// Starten des Echtzeitbetriebssystems
 {
 	APOS_SetPSP();
-	__set_CONTROL(1);				// [0]=0 	privileged mode um IRQs enable/disable zu koennen
+	__set_CONTROL(2);				// [0]=0 	privileged mode um IRQs enable/disable zu koennen
 													// [1]=1 thread mode - Alternate stack pointer PSP is used. 
-	while(1)
-		APOS_Scheduler();															// Scheduler in Endlos-Schleife ausführen
+	APOS_Scheduler();				// Scheduler in Endlos-Schleife ausführen
 }
 						
 void APOS_Scheduler(void)
 {
 	static int lastTick = 0;
-	int tick = Systick_GetTick();
-	if(lastTick == 0)
-		lastTick = tick;
-	
-	
-	//  if((tick - lastTick) >= pTasks[currentTask]->timeSlice) // wenn timeSlice des aktuellen abgelaufen, dann
-	if((tick - lastTick) > 0) 										// wenn SysTick erhöht wurde
-	{	currentTask++;															// auf nächsten Task schalten
-		currentTask %= numTasks;
-		lastTick = Systick_GetTick();
-		setPendSV();																// PendSV Handler auslösen
-	} else 
-	{	pTasks[currentTask]->routine();	 						// akutelle Task-Funktion callen
+	while(1)
+	{
+		int tick = Systick_GetTick();
+		if(lastTick == 0)
+			lastTick = tick;
+		
+		
+			if((tick - lastTick) >= pTasks[currentTask]->timeSlice) // wenn timeSlice des aktuellen abgelaufen, dann
+		//if((tick - lastTick) > 0) 										// wenn SysTick erhöht wurde
+		{	currentTask++;															// auf nächsten Task schalten
+			currentTask %= numTasks;
+			lastTick = Systick_GetTick();
+			setPendSV();																// PendSV Handler auslösen
+		} else 
+		{	
+			pTasks[currentTask]->routine();	 						// akutelle Task-Funktion callen
+		}
 	}
 }
 
 void APOS_SetPSP(void)
-{	__set_PSP(pTasks[currentTask]->pStack);
+{	__set_PSP((uint32_t)pTasks[currentTask]->pStack);
 }
 
 void	setPendSV(void)

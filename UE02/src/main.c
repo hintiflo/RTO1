@@ -59,12 +59,16 @@ int main(void)
 	uint32_t stackTaskE[100];
 	uint32_t stackTaskF[100];
 	
-	APOS_TASK_Create(&TASKA, "TaskA", 1, TaskCounter, stackTaskA, sizeof(stackTaskA), 10);
-	APOS_TASK_Create(&TASKB, "TaskB", 1, TaskKey, stackTaskB, sizeof(stackTaskB), 10);
-	APOS_TASK_Create(&TASKC, "TaskC", 1, TaskLed, stackTaskC, sizeof(stackTaskC), 10);
-	APOS_TASK_Create(&TASKD, "TaskD", 1, TaskWatch, stackTaskD, sizeof(stackTaskD), 10);
-	APOS_TASK_Create(&TASKE, "TaskE", 1, TaskPoti, stackTaskE, sizeof(stackTaskE), 10);
-	APOS_TASK_Create(&TASKF, "TaskF", 1, TaskMandelbrot, stackTaskF, sizeof(stackTaskF), 100);
+	APOS_TASK_Create(&TASKA, "TaskA", 1, FillTaskA, stackTaskA, sizeof(stackTaskA), 10);
+	APOS_TASK_Create(&TASKB, "TaskB", 1, FillTaskB, stackTaskB, sizeof(stackTaskB), 10);
+	APOS_TASK_Create(&TASKC, "TaskC", 1, FillTaskC, stackTaskC, sizeof(stackTaskC), 10);
+	
+//	APOS_TASK_Create(&TASKA, "TaskA", 1, TaskCounter, stackTaskA, sizeof(stackTaskA), 10);
+//	APOS_TASK_Create(&TASKB, "TaskB", 1, TaskKey, stackTaskB, sizeof(stackTaskB), 10);
+//	APOS_TASK_Create(&TASKC, "TaskC", 1, TaskLed, stackTaskC, sizeof(stackTaskC), 10);
+//	APOS_TASK_Create(&TASKD, "TaskD", 1, TaskWatch, stackTaskD, sizeof(stackTaskD), 10);
+//	APOS_TASK_Create(&TASKE, "TaskE", 1, TaskPoti, stackTaskE, sizeof(stackTaskE), 10);
+//	APOS_TASK_Create(&TASKF, "TaskF", 1, TaskMandelbrot, stackTaskF, sizeof(stackTaskF), 100);
 	
   Key_Init();
   Led_Init();
