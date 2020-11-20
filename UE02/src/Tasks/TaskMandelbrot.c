@@ -11,7 +11,7 @@
 #define ImageHeight 150
 #define ImageWidth  150
 #define OFFSET			150
-
+#define TEXT_INTER 500
 
 static void MandelBrot (void)
 {
@@ -80,12 +80,13 @@ static void MandelBrot (void)
 
 void TaskMandelbrot (void)
 {
-	static char first = TRUE;
-	if(first) {
+	static uint32_t last = 0;
+
+	if((Systick_GetTick() - last) > TEXT_INTER) {
 		Tft_DrawString(10, 18+5*24, "ManBr ");
-		first = FALSE;
+		last = Systick_GetTick();
 	}
-	
+
 	 
 	if( !APOS_TestRegion()	)	// region ist verfuegbar
 	{	APOS_EnterRegion();
