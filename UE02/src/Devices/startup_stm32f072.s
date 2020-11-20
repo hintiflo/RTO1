@@ -152,18 +152,19 @@ SVC_Handler     PROC
 PendSV_Handler  PROC
                 EXPORT  PendSV_Handler                 [WEAK]
 				mrs r0, psp
+				subs r0, r0, #32
 				stm r0!, {r4-r7}			
 				mov r4, r8					
 				mov r5, r9
 				mov r6, r10
 				mov r7, r11
 				stm r0!, {r4-r7}
+				subs r0, r0, #16
 				mov r5, r14					; save LR in R5
 				IMPORT  APOS_SetPSP
                 LDR     R0, =APOS_SetPSP	; call C-Function
                 BLX     R0					; to set psp for next Task
 				mov r14, r5					; get LR back from R5
-				mrs r0, psp
 				subs r0, r0, #16
 				ldm r0!, {r4-r7}
 				mov r8, r4

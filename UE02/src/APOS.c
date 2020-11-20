@@ -40,14 +40,14 @@ void APOS_Init(void)  													// Initialisert das Echtzeitbetriebssystem
 
 static void APOS_STACK_INIT(APOS_TCB_STRUCT* pTask)
 {
-	pTask->pStack[7] = 0x01000000; // xPSR ( thumb mode )
-	pTask->pStack[6] = (uint32_t)pTask->routine; // PC
-	pTask->pStack[5] = (uint32_t)APOS_Scheduler; // LR
+	pTask->pStack[pTask->stackSize-1] = 0x01000000; // xPSR ( thumb mode )
+	pTask->pStack[pTask->stackSize-2] = (uint32_t)pTask->routine; // PC
+	pTask->pStack[pTask->stackSize-3] = (uint32_t)APOS_Scheduler; // LR
 	for(int i = 0; i < 5; i++)
 	{
-		pTask->pStack[i] = i+1; // r12, r3, r2, r1, r0
+		pTask->pStack[pTask->stackSize-i-4] = i+1; // r12, r3, r2, r1, r0
 	}
-	//pTask->pStack = pTask->pStack + 7;
+	pTask->pStack = pTask->pStack + pTask->stackSize-7-1;
 }
 
 void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
@@ -78,7 +78,7 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 	pTask->routine = pRoutine;
 	pTask->pStack = pStack;
 	pTask->timeSlice = TimeSlice;
-	pTask->stackSize = StackSize;
+	pTask->stackSize = StackSize / 4;
 	APOS_STACK_INIT(pTask);
 	if(numTasks < maxTasks) {												
 		pTasks[numTasks] = pTask;											// in der Task-Liste eintragen
