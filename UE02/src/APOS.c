@@ -20,16 +20,24 @@ static void copyTasks(APOS_TCB_STRUCT** source, APOS_TCB_STRUCT** dest, uint32_t
 	{	(*dest)[i] = (*source)[i];
 	}
 }
-
+ 
 void APOS_Init(void)  													// Initialisert das Echtzeitbetriebssystem
 {	
-	NVIC_SetPriority(PendSV_IRQn, 0xF0 );					// höchster Wert: kleinste Prio
-																								// 0xF im oberen nibble: 0b11110000
+	// NVIC_InitTypeDef NVIC_InitStruct;
+	// NVIC_InitStruct.NVIC_IRQChannel = PendSV_IRQn;
+	// NVIC_InitStruct.NVIC_IRQChannelPriority = 0xF0;	// höchster Wert: kleinste Prio
+	// 																								// 0xF im oberen nibble: 0b11110000
+	// NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;	
+	// NVIC_Init(&NVIC_InitStruct);
+	// 
+	// NVIC_SetPriority(PendSV_IRQn, 0xF0 );				
+	
 	for(int i = 0; i < numTasks; i++) 
 	{		pTasks[i] = NULL;
 	}
 	
 }
+
 
 void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 					#ifdef DEBUG
@@ -47,6 +55,7 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 	
 	if(!pTask)																			// notwendigen Speicher für Task-Daten allokiern
 		pTask = calloc(sizeof(APOS_TCB_STRUCT), 1);
+	
 	
 	#ifdef DEBUG
 	if(!pTaskName)
@@ -68,7 +77,8 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 void APOS_Start(void)  														// Starten des Echtzeitbetriebssystems
 {
 	APOS_SetPSP();
-	__set_CONTROL(1);
+	__set_CONTROL(1);				// [0]=0 	privileged mode um IRQs enable/disable zu koennen
+													// [1]=1 thread mode - Alternate stack pointer PSP is used. 
 	while(1)
 		APOS_Scheduler();															// Scheduler in Endlos-Schleife ausführen
 }
@@ -81,7 +91,8 @@ void APOS_Scheduler(void)
 		lastTick = tick;
 	
 	
-	if((tick - lastTick) >= pTasks[currentTask]->timeSlice) // wenn timeSlice des aktuellen abgelaufen, dann
+	//  if((tick - lastTick) >= pTasks[currentTask]->timeSlice) // wenn timeSlice des aktuellen abgelaufen, dann
+	if((tick - lastTick) > 0) 										// wenn SysTick erhöht wurde
 	{	currentTask++;															// auf nächsten Task schalten
 		currentTask %= numTasks;
 		lastTick = Systick_GetTick();
@@ -96,6 +107,44 @@ void APOS_SetPSP(void)
 }
 
 void	setPendSV(void)
-{ SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+{	// NVIC_SetPendingIRQ(PendSV_IRQn); ... wirkungslos, beobachtet beim debuggen
+	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+}
+
+// betreten einer critical region durch deaktivieren aller Interrupts
+void APOS_EnterRegion()	// um einen task switch zu verhindern
+{	// uint32_t primask = __get_PRIMASK();
+	__disable_irq();
+	// primask = __get_PRIMASK(); 				...zum debuggen, ob IRQ wirklich deaktiviert wurde
+																				// nach disable muss primask == 1 sein
+}
+
+// verlassen einer critical region durch aktivieren aller Interrupts
+void APOS_LeaveRegion()	// um task switch wieder zu ermöglichen
+{	//	uint32_t primask = __get_PRIMASK();
+	__enable_irq();	//  wirkungslos?
+	// primask = __get_PRIMASK();					...zum debuggen, ob IRQ wirklich wieder aktiviert wurde
+																				// nach disable muss primask == 0 sein
+}
+
+// prufen, ob critical region schon vergeben ist, durch prüfen 
+// return 1 ... region vergeben
+// return 0 ... region ist gerade frei
+int APOS_TestRegion()	// ob priority mask der IRQs gesetzt wurde
+{	uint32_t primask = __get_PRIMASK();		
+	return primask;
+}	
+
+void APOS_Delay (uint32_t ticks)
+{	static int prevTick = 0;
+	int tick = Systick_GetTick();
+	if(prevTick == 0)
+		prevTick = tick;
+	
+	while((tick - prevTick) < ticks)
+	{
+		__NOP;
+	}
+
 }
 

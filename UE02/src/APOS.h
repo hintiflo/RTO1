@@ -22,18 +22,17 @@ void FillTaskA(void);
 void FillTaskB(void);
 void FillTaskC(void);
 
-// set the PendSV to trigger a task Switch
+// setzt des PendSV Bit um einen TaskSwitch auszuloesen
 void	setPendSV(void);
 
 
 // Schritt 4:
-
-// void APOS_EnterRegion(){};
-// void APOS_LeaveRegion(){}; 
-// void APOS_TestRegion(){};
+void APOS_EnterRegion(void);
+void APOS_LeaveRegion(void);
+int	 APOS_TestRegion(void);
 
 // Schritt 5:
-// void APOS_Delay (uint32_t ticks){};
+void APOS_Delay (uint32_t ticks);
 	 
 
 typedef struct

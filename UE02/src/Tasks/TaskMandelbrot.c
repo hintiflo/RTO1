@@ -4,6 +4,8 @@
 #include "stm32f0xx.h"
 #include "BSP/systick.h"
 
+#include	"APOS.h"
+
 // Quelle Algorithmus Mandelbrot: http://warp.povusers.org/Mandelbrot/ 
 
 #define ImageHeight 150
@@ -84,6 +86,11 @@ void TaskMandelbrot (void)
 		first = FALSE;
 	}
 	
-	MandelBrot();	
+	 
+	if( !APOS_TestRegion()	)	// region ist verfuegbar
+	{	APOS_EnterRegion();
+		MandelBrot();	
+		APOS_LeaveRegion();
+	}
 //	OrigMandelBrot();
 }

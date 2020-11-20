@@ -36,7 +36,7 @@ static void sleep()
 		__NOP;
 }
 
-static void tryGPIO();		// helper func for wiring the analyzer
+static void tryGPIO( void );		// helper func for wiring the analyzer
 void GPIO_setup( void );
 
 	
@@ -121,7 +121,7 @@ int main(void)
 
 // sequential setting/resetting of GPIOs to help during wiring of the logic analyzer
 // additional sleep-phase in the end for snycronosation with Analyzer-View
-static void tryGPIO()	
+static void tryGPIO( void )	
 {
 	while(1)
 	{
