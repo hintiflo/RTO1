@@ -5,7 +5,7 @@
 #include "BSP/systick.h"
 #include <stdio.h>
 
-#define INTERVAL_WATCH 2
+#define INTERVAL_WATCH 1000
 #define NUM_CHAR 14
 static char output[NUM_CHAR];
 
