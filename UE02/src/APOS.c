@@ -93,10 +93,10 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 
 void APOS_Start(void)  														// Starten des Echtzeitbetriebssystems
 {
-	APOS_SetPSP();
+	__set_PSP(__get_MSP());
 	__set_CONTROL(2);				// [0]=0 	privileged mode um IRQs enable/disable zu koennen
-													// [1]=1 thread mode - Alternate stack pointer PSP is used. 
-	APOS_Scheduler();				// Scheduler in Endlos-Schleife ausführen
+	setPendSV();												// [1]=1 thread mode - Alternate stack pointer PSP is used. 
+	//APOS_Scheduler();				// Scheduler in Endlos-Schleife ausführen
 }
 						
 void APOS_Scheduler(void)
@@ -111,7 +111,8 @@ void APOS_Scheduler(void)
 		
 			if((tick - lastTick) >= pTasks[currentTask]->timeSlice || !APOS_Running()) // wenn timeSlice des aktuellen abgelaufen, dann
 		//if((tick - lastTick) > 0) 										// wenn SysTick erhöht wurde
-		{	currentTask++;															// auf nächsten Task schalten
+		{
+			currentTask++;															// auf nächsten Task schalten
 			currentTask %= numTasks;
 			lastTick = Systick_GetTick();
 			setPendSV();																// PendSV Handler auslösen
