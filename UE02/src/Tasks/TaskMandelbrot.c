@@ -87,11 +87,10 @@ void TaskMandelbrot (void)
 		last = Systick_GetTick();
 	}
 
-	 
-	if( !APOS_TestRegion()	)	// region ist verfuegbar
-	{	APOS_EnterRegion();
-		MandelBrot();	
-		APOS_LeaveRegion();
-	}
-//	OrigMandelBrot();
+		while (1) 
+		{
+			MandelBrot();	
+			// enter Code
+			//APOS_Scheduler();
+		}
 }

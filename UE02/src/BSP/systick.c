@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include "stm32f0xx.h"
 #include "systick.h"
+#include "APOS.h"
 
 /* Private define ------------------------------------------------------------*/
 #define _1_sec			1000
@@ -34,7 +35,7 @@ void SysTick_Handler (void)
 	// SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
   msTicks++;                                    // increment Tick-counter
 	// GPIO_WriteBit(GPIOB, GPIO_Pin_0, Bit_RESET);
-
+	APOS_Scheduler();
 }
 
 /*-------------------------------------------------------------------------------

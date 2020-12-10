@@ -158,8 +158,9 @@ PendSV_Handler  PROC
 				mov r5, r9
 				mov r6, r10
 				mov r7, r11
+;				adds r0, r0, #16
 				stm r0!, {r4-r7}
-				subs r0, r0, #16
+;				adds r0, r0, #16
 				mov r5, r14					; save LR in R5
 				IMPORT  APOS_SetPSP
                 LDR     R0, =APOS_SetPSP	; call C-Function

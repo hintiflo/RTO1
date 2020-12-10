@@ -13,7 +13,7 @@ static const uint32_t maxTasks = 10;
 static uint32_t numTasks = 0;
 static uint32_t currentTask = 0;
 static APOS_TCB_STRUCT* pTasks[maxTasks];
-
+static uint32_t IS_Initialized = 0;
 
 static void copyTasks(APOS_TCB_STRUCT** source, APOS_TCB_STRUCT** dest, uint32_t size)
 {	for(int i = 0; i < size; i++) 
@@ -42,6 +42,8 @@ void APOS_Init(void)  													// Initialisert das Echtzeitbetriebssystem
 
 static void APOS_STACK_INIT(APOS_TCB_STRUCT* pTask)
 {
+//	if(currentTask == 0)
+//		return;
 	pTask->pStack[pTask->stackSize-1] = 0x01000000; // xPSR ( thumb mode )
 	pTask->pStack[pTask->stackSize-2] = (uint32_t)pTask->routine; // PC
 	pTask->pStack[pTask->stackSize-3] = (uint32_t)APOS_Scheduler; // LR
@@ -93,38 +95,40 @@ void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
 
 void APOS_Start(void)  														// Starten des Echtzeitbetriebssystems
 {
-	__set_PSP(__get_MSP());
+	__set_PSP((uint32_t)pTasks[currentTask]->pStack);
 	__set_CONTROL(2);				// [0]=0 	privileged mode um IRQs enable/disable zu koennen
-	setPendSV();												// [1]=1 thread mode - Alternate stack pointer PSP is used. 
-	//APOS_Scheduler();				// Scheduler in Endlos-Schleife ausführen
+	//setPendSV();												// [1]=1 thread mode - Alternate stack pointer PSP is used. 
+	IS_Initialized = 1;
+	pTasks[currentTask]->routine();				// Scheduler in Endlos-Schleife ausführen
 }
 						
 void APOS_Scheduler(void)
 {
 	static int lastTick = 0;
-	while(1)
+	if(IS_Initialized)
 	{
 		int tick = Systick_GetTick();
 		if(lastTick == 0)
 			lastTick = tick;
 		
-		
-			if((tick - lastTick) >= pTasks[currentTask]->timeSlice || !APOS_Running()) // wenn timeSlice des aktuellen abgelaufen, dann
+		if((tick - lastTick) >= pTasks[currentTask]->timeSlice || !APOS_Running()) // wenn timeSlice des aktuellen abgelaufen, dann
 		//if((tick - lastTick) > 0) 										// wenn SysTick erhöht wurde
 		{
-			currentTask++;															// auf nächsten Task schalten
-			currentTask %= numTasks;
 			lastTick = Systick_GetTick();
 			setPendSV();																// PendSV Handler auslösen
-		} else 
-		{	
-				pTasks[currentTask]->routine();	 						// akutelle Task-Funktion callen
-		}
+		} //else 
+//		{	
+//			pTasks[currentTask]->routine();	 						// akutelle Task-Funktion callen
+//		}
 	}
 }
 
 void APOS_SetPSP(void)
-{	__set_PSP((uint32_t)pTasks[currentTask]->pStack);
+{	
+	pTasks[currentTask]->pStack = (uint32_t*)__get_PSP();
+	currentTask++;															// auf nächsten Task schalten
+	currentTask %= numTasks;
+	__set_PSP((uint32_t)pTasks[currentTask]->pStack);
 }
 
 void	setPendSV(void)
