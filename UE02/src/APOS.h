@@ -13,8 +13,15 @@
 // for debugging
 #define DEBUG
 
+
+
+	
 typedef void (*Routine)(void);
 
+// #define STACK_END        "STACK-END"
+#define STACK_END        0xdeadbeef
+#define SET_STACK_END(PTR, SIZE)        *(PTR - SIZE / sizeof(uint32_t)) = STACK_END
+#define GET_STACK_END(PTR, SIZE)    *(PTR - SIZE / sizeof(uint32_t))
 
 // Schritt 1:
 void TaskA(void);
@@ -35,6 +42,9 @@ int	 APOS_TestRegion(void);
 
 // Schritt 5:
 void APOS_Delay (uint32_t ticks);
+
+
+int verifyStackEnd(void);
 
 typedef enum { RUNNING, SUSPENDED }APUS_TASK_STATUS;
 
