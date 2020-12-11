@@ -1,0 +1,76 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}ifndef \PYGZus{}\PYGZus{}APOS}
+\PYG{c+cp}{\PYGZsh{}define \PYGZus{}\PYGZus{}APOS}
+
+
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZdq{}Services/StdDef.h\PYGZdq{}}
+\PYG{c+c1}{// \PYGZsh{}include \PYGZdq{}BSP/systick.h\PYGZdq{}}
+\PYG{c+c1}{// \PYGZsh{}include \PYGZdq{}stm32f0xx\PYGZus{}gpio.h\PYGZdq{}}
+\PYG{c+c1}{// \PYGZsh{}include \PYGZdq{}TaskAll.h\PYGZdq{}}
+\PYG{c+c1}{// \PYGZsh{}include \PYGZlt{}stdio.h\PYGZgt{}}
+
+\PYG{c+c1}{// for debugging}
+\PYG{c+cp}{\PYGZsh{}define DEBUG}
+
+\PYG{k}{typedef} \PYG{n+nf}{void} \PYG{p}{(}\PYG{o}{*}\PYG{n}{Routine}\PYG{p}{)(}\PYG{k+kt}{void}\PYG{p}{);}
+
+
+\PYG{c+c1}{// Schritt 1:}
+\PYG{k+kt}{void} \PYG{n+nf}{TaskA}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{TaskB}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{TaskC}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{FillTaskA}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{FillTaskB}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{FillTaskC}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+
+\PYG{c+c1}{// setzt des PendSV Bit um einen TaskSwitch auszuloesen}
+\PYG{k+kt}{void}	\PYG{n+nf}{setPendSV}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+
+
+\PYG{c+c1}{// Schritt 4:}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}EnterRegion}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}LeaveRegion}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+\PYG{k+kt}{int}	 \PYG{n+nf}{APOS\PYGZus{}TestRegion}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+
+\PYG{c+c1}{// Schritt 5:}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Delay} \PYG{p}{(}\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{ticks}\PYG{p}{);}
+
+\PYG{k}{typedef} \PYG{k}{enum} \PYG{p}{\PYGZob{}} \PYG{n}{RUNNING}\PYG{p}{,} \PYG{n}{SUSPENDED} \PYG{p}{\PYGZcb{}}\PYG{n}{APUS\PYGZus{}TASK\PYGZus{}STATUS}\PYG{p}{;}
+
+\PYG{k}{typedef} \PYG{k}{struct}
+\PYG{p}{\PYGZob{}}
+	\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{prio}\PYG{p}{;}
+	\PYG{n}{Routine} \PYG{n}{routine}\PYG{p}{;}
+	\PYG{k+kt}{uint32\PYGZus{}t}\PYG{o}{*} \PYG{n}{pStack}\PYG{p}{;}
+	\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{stackSize}\PYG{p}{;}
+	\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{timeSlice}\PYG{p}{;}
+	\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{delay}\PYG{p}{;}
+	\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{statusTime}\PYG{p}{;}
+	\PYG{n}{APUS\PYGZus{}TASK\PYGZus{}STATUS} \PYG{n}{status}\PYG{p}{;}
+ \PYG{c+cp}{\PYGZsh{}ifdef DEBUG}
+	\PYG{k+kt}{char} \PYG{o}{*} \PYG{n}{pTaskName}\PYG{p}{;}
+ \PYG{c+cp}{\PYGZsh{}endif}
+	
+\PYG{p}{\PYGZcb{}}\PYG{n}{APOS\PYGZus{}TCB\PYGZus{}STRUCT}\PYG{p}{;}
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Init}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}  													\PYG{c+c1}{// Initialisert das Echtzeitbetriebssystem}
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}TASK\PYGZus{}Create}\PYG{p}{(} \PYG{n}{APOS\PYGZus{}TCB\PYGZus{}STRUCT}\PYG{o}{*} \PYG{n}{pTask}\PYG{p}{,}  	\PYG{c+c1}{// TaskControlBlock}
+					\PYG{c+cp}{\PYGZsh{}ifdef DEBUG}
+						\PYG{k}{const} \PYG{k+kt}{char}\PYG{o}{*} \PYG{n}{pTaskName}\PYG{p}{,} 								\PYG{c+c1}{// Task Name – nur für Debug\PYGZhy{}Zwecke}
+					\PYG{c+cp}{\PYGZsh{}endif}
+						\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{Priority}\PYG{p}{,}  									\PYG{o}{//} \PYG{n}{Priorität} \PYG{n}{des} \PYG{n}{Tasks} \PYG{p}{(}\PYG{n}{vorerst} \PYG{n}{nicht} \PYG{n}{in} \PYG{n}{Verwendung}\PYG{p}{)}
+						\PYG{k+kt}{void} \PYG{p}{(}\PYG{o}{*}\PYG{n}{pRoutine}\PYG{p}{)(}\PYG{k+kt}{void}\PYG{p}{),}  							\PYG{c+c1}{// Startadresse Task (ROM)}
+						\PYG{k+kt}{uint32\PYGZus{}t}\PYG{o}{*} \PYG{n}{pStack}\PYG{p}{,} 												\PYG{c+c1}{// Startadresse Stack des Tasks (RAM)}
+						\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{StackSize}\PYG{p}{,}  									\PYG{c+c1}{// Größe des Stacks}
+						\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{TimeSlice}  									\PYG{c+c1}{// Time\PYGZhy{}Slice für Round Robin Scheduling}
+						\PYG{p}{);}
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Start}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}  \PYG{c+c1}{// Starten des Echtzeitbetriebssystems}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Scheduler}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}  \PYG{c+c1}{// OS Scheduler}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}SetPSP}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Delay}\PYG{p}{(}\PYG{k+kt}{uint32\PYGZus{}t} \PYG{n}{ticks}\PYG{p}{);}
+
+						
+\PYG{c+cp}{\PYGZsh{}endif }\PYG{c+c1}{// \PYGZus{}\PYGZus{}APOS}
+\end{Verbatim}

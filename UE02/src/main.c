@@ -59,9 +59,9 @@ int main(void)
 	APOS_TCB_STRUCT	TASKF;
 
 	
-//	APOS_TASK_Create(&TASKA, "TaskA", 1, FillTaskA, stackTaskA, sizeof(stackTaskA), 10);
-//	APOS_TASK_Create(&TASKB, "TaskB", 1, FillTaskB, stackTaskB, sizeof(stackTaskB), 10);
-//	APOS_TASK_Create(&TASKC, "TaskC", 1, FillTaskC, stackTaskC, sizeof(stackTaskC), 10);
+//	APOS_TASK_Create(&TASKA, "TaskA", 1, FillTaskA, stackTaskA, sizeof(stackTaskA), 100);
+//	APOS_TASK_Create(&TASKB, "TaskB", 1, FillTaskB, stackTaskB, sizeof(stackTaskB), 100);
+//	APOS_TASK_Create(&TASKC, "TaskC", 1, FillTaskC, stackTaskC, sizeof(stackTaskC), 100);
 	
 	APOS_TASK_Create(&TASKA, "TaskA", 1, TaskCounter, stackTaskA, sizeof(stackTaskA), 100);
 	APOS_TASK_Create(&TASKB, "TaskB", 1, TaskKey, stackTaskB, sizeof(stackTaskB), 100);
@@ -87,37 +87,6 @@ int main(void)
 	APOS_Start();
 
 
-	#if 0		// code ab hier is obsolet
-		while (0)
-		{	setSysTickLED();
-
-			setCounterLED();
-			TaskCounter();
-			resCounterLED();
-			
-			setKeyLED();
-			TaskKey();
-			resKeyLED();
-
-			setLedLED();
-			TaskLed();	
-			resLedLED();
-
-			setWatchLED();
-			TaskWatch();
-			resWatchLED();
-
-			setPotiLED();
-			TaskPoti();	
-			resPotiLED();
-
-			 setMandelbrotLED();
-			 TaskMandelbrot();		
-			 resMandelbrotLED();		
-
-			resSysTickLED();
-		}
-	#endif
 	return 0;
 }	//	int main(void)
 

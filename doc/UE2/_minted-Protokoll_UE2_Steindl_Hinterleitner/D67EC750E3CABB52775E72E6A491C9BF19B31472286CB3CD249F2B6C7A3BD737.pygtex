@@ -1,0 +1,150 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{err}{\PYGZsh{}}\PYG{n}{include} \PYG{o}{\PYGZlt{}}\PYG{n}{stdlib}\PYG{o}{.}\PYG{n+na}{h}\PYG{o}{\PYGZgt{}}
+\PYG{err}{\PYGZsh{}}\PYG{n}{include} \PYG{o}{\PYGZlt{}}\PYG{n}{stdint}\PYG{o}{.}\PYG{n+na}{h}\PYG{o}{\PYGZgt{}}
+\PYG{err}{\PYGZsh{}}\PYG{n}{include} \PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{.}\PYG{n+na}{h}\PYG{o}{\PYGZgt{}}
+\PYG{err}{\PYGZsh{}}\PYG{n}{include} \PYG{l+s}{\PYGZdq{}Services/StdDef.h\PYGZdq{}}
+\PYG{err}{\PYGZsh{}}\PYG{n}{include} \PYG{l+s}{\PYGZdq{}APOS.h\PYGZdq{}}
+\PYG{err}{\PYGZsh{}}\PYG{n}{include} \PYG{l+s}{\PYGZdq{}BSP/systick.h\PYGZdq{}}
+\PYG{err}{\PYGZsh{}}\PYG{n}{include} \PYG{l+s}{\PYGZdq{}stm32f0xx\PYGZus{}gpio.h\PYGZdq{}}
+
+\PYG{err}{\PYGZsh{}}\PYG{n}{define} \PYG{n}{DEBUG}
+
+\PYG{k+kd}{static} \PYG{k+kd}{const} \PYG{n}{uint32\PYGZus{}t} \PYG{n}{maxTasks} \PYG{o}{=} \PYG{l+m+mi}{10}\PYG{o}{;}
+\PYG{k+kd}{static} \PYG{n}{uint32\PYGZus{}t} \PYG{n}{numTasks} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{;}
+\PYG{k+kd}{static} \PYG{n}{uint32\PYGZus{}t} \PYG{n}{currentTask} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{;}
+\PYG{k+kd}{static} \PYG{n}{APOS\PYGZus{}TCB\PYGZus{}STRUCT}\PYG{o}{*} \PYG{n}{pTasks}\PYG{o}{[}\PYG{n}{maxTasks}\PYG{o}{];}
+
+
+\PYG{k+kd}{static} \PYG{k+kt}{void} \PYG{n+nf}{copyTasks}\PYG{o}{(}\PYG{n}{APOS\PYGZus{}TCB\PYGZus{}STRUCT}\PYG{o}{**} \PYG{n}{source}\PYG{o}{,} \PYG{n}{APOS\PYGZus{}TCB\PYGZus{}STRUCT}\PYG{o}{**} \PYG{n}{dest}\PYG{o}{,} \PYG{n}{uint32\PYGZus{}t} \PYG{n}{size}\PYG{o}{)}
+\PYG{o}{\PYGZob{}}	\PYG{k}{for}\PYG{o}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{size}\PYG{o}{;} \PYG{n}{i}\PYG{o}{++)} 
+	\PYG{o}{\PYGZob{}}	\PYG{o}{(*}\PYG{n}{dest}\PYG{o}{)[}\PYG{n}{i}\PYG{o}{]} \PYG{o}{=} \PYG{o}{(*}\PYG{n}{source}\PYG{o}{)[}\PYG{n}{i}\PYG{o}{];}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+ 
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Init}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{)}  													\PYG{c+c1}{// Initialisert das Echtzeitbetriebssystem}
+\PYG{o}{\PYGZob{}}	
+	\PYG{c+c1}{// NVIC\PYGZus{}InitTypeDef NVIC\PYGZus{}InitStruct;}
+	\PYG{c+c1}{// NVIC\PYGZus{}InitStruct.NVIC\PYGZus{}IRQChannel = PendSV\PYGZus{}IRQn;}
+	\PYG{c+c1}{// NVIC\PYGZus{}InitStruct.NVIC\PYGZus{}IRQChannelPriority = 0xF0;	// höchster Wert: kleinste Prio}
+	\PYG{c+c1}{// 																								// 0xF im oberen nibble: 0b11110000}
+	\PYG{c+c1}{// NVIC\PYGZus{}InitStruct.NVIC\PYGZus{}IRQChannelCmd = ENABLE;	}
+	\PYG{c+c1}{// NVIC\PYGZus{}Init(\PYGZam{}NVIC\PYGZus{}InitStruct);}
+	\PYG{c+c1}{// }
+	\PYG{c+c1}{// NVIC\PYGZus{}SetPriority(PendSV\PYGZus{}IRQn, 0xF0 );				}
+	
+	\PYG{k}{for}\PYG{o}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{numTasks}\PYG{o}{;} \PYG{n}{i}\PYG{o}{++)} 
+	\PYG{o}{\PYGZob{}}		\PYG{n}{pTasks}\PYG{o}{[}\PYG{n}{i}\PYG{o}{]} \PYG{o}{=} \PYG{n}{NULL}\PYG{o}{;}
+	\PYG{o}{\PYGZcb{}}
+	
+\PYG{o}{\PYGZcb{}}
+
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}TASK\PYGZus{}Create}\PYG{o}{(} \PYG{n}{APOS\PYGZus{}TCB\PYGZus{}STRUCT}\PYG{o}{*} \PYG{n}{pTask}\PYG{o}{,}  	\PYG{c+c1}{// TaskControlBlock}
+					\PYG{err}{\PYGZsh{}}\PYG{n}{ifdef} \PYG{n}{DEBUG}
+						\PYG{k+kd}{const} \PYG{k+kt}{char}\PYG{o}{*} \PYG{n}{pTaskName}\PYG{o}{,} 								\PYG{c+c1}{// Task Name – nur für Debug\PYGZhy{}Zwecke}
+					\PYG{err}{\PYGZsh{}}\PYG{n}{endif}
+						\PYG{n}{uint32\PYGZus{}t} \PYG{n}{Priority}\PYG{o}{,}  									\PYG{c+c1}{// Priorität des Tasks (vorerst nicht in Verwendung)}
+						\PYG{k+kt}{void} \PYG{o}{(*}\PYG{n}{pRoutine}\PYG{o}{)(}\PYG{k+kt}{void}\PYG{o}{),}  							\PYG{c+c1}{// Startadresse Task (ROM)}
+						\PYG{k+kt}{void}\PYG{o}{*} \PYG{n}{pStack}\PYG{o}{,} 												\PYG{c+c1}{// Startadresse Stack des Tasks (RAM)}
+						\PYG{n}{uint32\PYGZus{}t} \PYG{n}{StackSize}\PYG{o}{,}  									\PYG{c+c1}{// Größe des Stacks}
+						\PYG{n}{uint32\PYGZus{}t} \PYG{n}{TimeSlice}  									\PYG{c+c1}{// Time\PYGZhy{}Slice für Round Robin Scheduling}
+						\PYG{o}{)}
+\PYG{o}{\PYGZob{}}
+	\PYG{k}{if}\PYG{o}{(}\PYG{n}{pRoutine} \PYG{o}{==} \PYG{n}{NULL}\PYG{o}{)}														\PYG{c+c1}{// Abbruch wenn keine gültige Funktions\PYGZhy{}adresse}
+		\PYG{k}{return}\PYG{o}{;}
+	
+	\PYG{k}{if}\PYG{o}{(!}\PYG{n}{pTask}\PYG{o}{)}																			\PYG{c+c1}{// notwendigen Speicher für Task\PYGZhy{}Daten allokiern}
+		\PYG{n}{pTask} \PYG{o}{=} \PYG{n}{calloc}\PYG{o}{(}\PYG{n}{sizeof}\PYG{o}{(}\PYG{n}{APOS\PYGZus{}TCB\PYGZus{}STRUCT}\PYG{o}{),} \PYG{l+m+mi}{1}\PYG{o}{);}
+	
+	
+	\PYG{err}{\PYGZsh{}}\PYG{n}{ifdef} \PYG{n}{DEBUG}
+	\PYG{n+nf}{if}\PYG{o}{(!}\PYG{n}{pTaskName}\PYG{o}{)}
+		\PYG{k}{return}\PYG{o}{;}
+	\PYG{n}{pTask}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pTaskName} \PYG{o}{=} \PYG{n}{calloc}\PYG{o}{(}\PYG{n}{sizeof}\PYG{o}{(}\PYG{k+kt}{char}\PYG{o}{),} \PYG{n}{strlen}\PYG{o}{(}\PYG{n}{pTaskName}\PYG{o}{));}
+	\PYG{n}{strcpy}\PYG{o}{(}\PYG{n}{pTask}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pTaskName}\PYG{o}{,} \PYG{n}{pTaskName}\PYG{o}{);}
+	\PYG{err}{\PYGZsh{}}\PYG{n}{endif}
+	\PYG{n}{pTask}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{prio} \PYG{o}{=} \PYG{n}{Priority}\PYG{o}{;}													\PYG{c+c1}{// Task\PYGZhy{}Daten in den control block übernehmen}
+	\PYG{n}{pTask}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{routine} \PYG{o}{=} \PYG{n}{pRoutine}\PYG{o}{;}
+	\PYG{n}{pTask}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pStack} \PYG{o}{=} \PYG{o}{(}\PYG{n}{uint32\PYGZus{}t}\PYG{o}{)}\PYG{n}{pStack}\PYG{o}{;}
+	\PYG{n}{pTask}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{timeSlice} \PYG{o}{=} \PYG{n}{TimeSlice}\PYG{o}{;}
+	
+	\PYG{k}{if}\PYG{o}{(}\PYG{n}{numTasks} \PYG{o}{\PYGZlt{}} \PYG{n}{maxTasks}\PYG{o}{)} \PYG{o}{\PYGZob{}}												
+		\PYG{n}{pTasks}\PYG{o}{[}\PYG{n}{numTasks}\PYG{o}{]} \PYG{o}{=} \PYG{n}{pTask}\PYG{o}{;}											\PYG{c+c1}{// in der Task\PYGZhy{}Liste eintragen}
+		\PYG{n}{numTasks}\PYG{o}{++;}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Start}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{)}  														\PYG{c+c1}{// Starten des Echtzeitbetriebssystems}
+\PYG{o}{\PYGZob{}}
+	\PYG{n}{APOS\PYGZus{}SetPSP}\PYG{o}{();}
+	\PYG{n}{\PYGZus{}\PYGZus{}set\PYGZus{}CONTROL}\PYG{o}{(}\PYG{l+m+mi}{1}\PYG{o}{);}				\PYG{c+c1}{// [0]=0 	privileged mode um IRQs enable/disable zu koennen}
+													\PYG{c+c1}{// [1]=1 thread mode \PYGZhy{} Alternate stack pointer PSP is used. }
+	\PYG{k}{while}\PYG{o}{(}\PYG{l+m+mi}{1}\PYG{o}{)}
+		\PYG{n}{APOS\PYGZus{}Scheduler}\PYG{o}{();}															\PYG{c+c1}{// Scheduler in Endlos\PYGZhy{}Schleife ausführen}
+\PYG{o}{\PYGZcb{}}
+						
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Scheduler}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{)}
+\PYG{o}{\PYGZob{}}
+	\PYG{k+kd}{static} \PYG{k+kt}{int} \PYG{n}{lastTick} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{;}
+	\PYG{k+kt}{int} \PYG{n}{tick} \PYG{o}{=} \PYG{n}{Systick\PYGZus{}GetTick}\PYG{o}{();}
+	\PYG{k}{if}\PYG{o}{(}\PYG{n}{lastTick} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{o}{)}
+		\PYG{n}{lastTick} \PYG{o}{=} \PYG{n}{tick}\PYG{o}{;}
+	
+	
+	\PYG{c+c1}{//  if((tick \PYGZhy{} lastTick) \PYGZgt{}= pTasks[currentTask]\PYGZhy{}\PYGZgt{}timeSlice) // wenn timeSlice des aktuellen abgelaufen, dann}
+	\PYG{k}{if}\PYG{o}{((}\PYG{n}{tick} \PYG{o}{\PYGZhy{}} \PYG{n}{lastTick}\PYG{o}{)} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{o}{)} 										\PYG{c+c1}{// wenn SysTick erhöht wurde}
+	\PYG{o}{\PYGZob{}}	\PYG{n}{currentTask}\PYG{o}{++;}															\PYG{c+c1}{// auf nächsten Task schalten}
+		\PYG{n}{currentTask} \PYG{o}{\PYGZpc{}=} \PYG{n}{numTasks}\PYG{o}{;}
+		\PYG{n}{lastTick} \PYG{o}{=} \PYG{n}{Systick\PYGZus{}GetTick}\PYG{o}{();}
+		\PYG{n}{setPendSV}\PYG{o}{();}																\PYG{c+c1}{// PendSV Handler auslösen}
+	\PYG{o}{\PYGZcb{}} \PYG{k}{else} 
+	\PYG{o}{\PYGZob{}}	\PYG{n}{pTasks}\PYG{o}{[}\PYG{n}{currentTask}\PYG{o}{]\PYGZhy{}\PYGZgt{}}\PYG{n}{routine}\PYG{o}{();}	 						\PYG{c+c1}{// akutelle Task\PYGZhy{}Funktion callen}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}SetPSP}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{)}
+\PYG{o}{\PYGZob{}}	\PYG{n}{\PYGZus{}\PYGZus{}set\PYGZus{}PSP}\PYG{o}{(}\PYG{n}{pTasks}\PYG{o}{[}\PYG{n}{currentTask}\PYG{o}{]\PYGZhy{}\PYGZgt{}}\PYG{n}{pStack}\PYG{o}{);}
+\PYG{o}{\PYGZcb{}}
+
+\PYG{k+kt}{void}	\PYG{n+nf}{setPendSV}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{)}
+\PYG{o}{\PYGZob{}}	\PYG{c+c1}{// NVIC\PYGZus{}SetPendingIRQ(PendSV\PYGZus{}IRQn); ... wirkungslos, beobachtet beim debuggen}
+	\PYG{n}{SCB}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{ICSR} \PYG{o}{|=} \PYG{n}{SCB\PYGZus{}ICSR\PYGZus{}PENDSVSET\PYGZus{}Msk}\PYG{o}{;}
+\PYG{o}{\PYGZcb{}}
+
+\PYG{c+c1}{// betreten einer critical region durch deaktivieren aller Interrupts}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}EnterRegion}\PYG{o}{()}	\PYG{c+c1}{// um einen task switch zu verhindern}
+\PYG{o}{\PYGZob{}}	\PYG{c+c1}{// uint32\PYGZus{}t primask = \PYGZus{}\PYGZus{}get\PYGZus{}PRIMASK();}
+	\PYG{n}{\PYGZus{}\PYGZus{}disable\PYGZus{}irq}\PYG{o}{();}
+	\PYG{c+c1}{// primask = \PYGZus{}\PYGZus{}get\PYGZus{}PRIMASK(); 				...zum debuggen, ob IRQ wirklich deaktiviert wurde}
+																				\PYG{c+c1}{// nach disable muss primask == 1 sein}
+\PYG{o}{\PYGZcb{}}
+
+\PYG{c+c1}{// verlassen einer critical region durch aktivieren aller Interrupts}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}LeaveRegion}\PYG{o}{()}	\PYG{c+c1}{// um task switch wieder zu ermöglichen}
+\PYG{o}{\PYGZob{}}	\PYG{c+c1}{//	uint32\PYGZus{}t primask = \PYGZus{}\PYGZus{}get\PYGZus{}PRIMASK();}
+	\PYG{n}{\PYGZus{}\PYGZus{}enable\PYGZus{}irq}\PYG{o}{();}	\PYG{c+c1}{//  wirkungslos?}
+	\PYG{c+c1}{// primask = \PYGZus{}\PYGZus{}get\PYGZus{}PRIMASK();					...zum debuggen, ob IRQ wirklich wieder aktiviert wurde}
+																				\PYG{c+c1}{// nach disable muss primask == 0 sein}
+\PYG{o}{\PYGZcb{}}
+
+\PYG{c+c1}{// prufen, ob critical region schon vergeben ist, durch prüfen }
+\PYG{c+c1}{// return 1 ... region vergeben}
+\PYG{c+c1}{// return 0 ... region ist gerade frei}
+\PYG{k+kt}{int} \PYG{n+nf}{APOS\PYGZus{}TestRegion}\PYG{o}{()}	\PYG{c+c1}{// ob priority mask der IRQs gesetzt wurde}
+\PYG{o}{\PYGZob{}}	\PYG{n}{uint32\PYGZus{}t} \PYG{n}{primask} \PYG{o}{=} \PYG{n}{\PYGZus{}\PYGZus{}get\PYGZus{}PRIMASK}\PYG{o}{();}		
+	\PYG{k}{return} \PYG{n}{primask}\PYG{o}{;}
+\PYG{o}{\PYGZcb{}}	
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Delay} \PYG{o}{(}\PYG{n}{uint32\PYGZus{}t} \PYG{n}{ticks}\PYG{o}{)}
+\PYG{o}{\PYGZob{}}	\PYG{k+kd}{static} \PYG{k+kt}{int} \PYG{n}{prevTick} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{;}
+	\PYG{k+kt}{int} \PYG{n}{tick} \PYG{o}{=} \PYG{n}{Systick\PYGZus{}GetTick}\PYG{o}{();}
+	\PYG{k}{if}\PYG{o}{(}\PYG{n}{prevTick} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{o}{)}
+		\PYG{n}{prevTick} \PYG{o}{=} \PYG{n}{tick}\PYG{o}{;}
+	
+	\PYG{k}{while}\PYG{o}{((}\PYG{n}{tick} \PYG{o}{\PYGZhy{}} \PYG{n}{prevTick}\PYG{o}{)} \PYG{o}{\PYGZlt{}} \PYG{n}{ticks}\PYG{o}{)}
+	\PYG{o}{\PYGZob{}}
+		\PYG{n}{\PYGZus{}\PYGZus{}NOP}\PYG{o}{;}
+	\PYG{o}{\PYGZcb{}}
+
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

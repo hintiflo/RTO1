@@ -1,0 +1,287 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{;******************** (C) COPYRIGHT 2014 STMicroelectronics ********************}
+\PYG{c}{;* File Name          : startup\PYGZus{}stm32f072.s}
+\PYG{c}{;* Author             : MCD Application Team}
+\PYG{c}{;* Version            : V1.3.1}
+\PYG{c}{;* Date               : 17\PYGZhy{}January\PYGZhy{}2014 }
+\PYG{c}{;* Description        : STM32F072 Devices vector table for}
+\PYG{c}{;*                      for MDK\PYGZhy{}ARM toolchain.}
+\PYG{c}{;*                      This module performs:}
+\PYG{c}{;*                      \PYGZhy{} Set the initial SP}
+\PYG{c}{;*                      \PYGZhy{} Set the initial PC == Reset\PYGZus{}Handler}
+\PYG{c}{;*                      \PYGZhy{} Set the vector table entries with the exceptions ISR address}
+\PYG{c}{;*                      \PYGZhy{} Configure the system clock}
+\PYG{c}{;*                      \PYGZhy{} Branches to \PYGZus{}\PYGZus{}main in the C library (which eventually}
+\PYG{c}{;*                        calls main()).}
+\PYG{c}{;*                      After Reset the CortexM0 processor is in Thread mode,}
+\PYG{c}{;*                      priority is Privileged, and the Stack is set to Main.}
+\PYG{c}{;* \PYGZlt{}\PYGZlt{}\PYGZlt{} Use Configuration Wizard in Context Menu \PYGZgt{}\PYGZgt{}\PYGZgt{}   }
+\PYG{c}{;*******************************************************************************}
+\PYG{c}{;  @attention}
+\PYG{c}{; }
+\PYG{c}{;  Licensed under MCD\PYGZhy{}ST Liberty SW License Agreement V2, (the \PYGZdq{}License\PYGZdq{});}
+\PYG{c}{;  You may not use this file except in compliance with the License.}
+\PYG{c}{;  You may obtain a copy of the License at:}
+\PYG{c}{; }
+\PYG{c}{;         http://www.st.com/software\PYGZus{}license\PYGZus{}agreement\PYGZus{}liberty\PYGZus{}v2}
+\PYG{c}{; }
+\PYG{c}{;  Unless required by applicable law or agreed to in writing, software }
+\PYG{c}{;  distributed under the License is distributed on an \PYGZdq{}AS IS\PYGZdq{} BASIS, }
+\PYG{c}{;  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}
+\PYG{c}{;  See the License for the specific language governing permissions and}
+\PYG{c}{;  limitations under the License.}
+\PYG{c}{; }
+\PYG{c}{;*******************************************************************************}
+\PYG{c}{;}
+\PYG{c}{; Amount of memory (in bytes) allocated for Stack}
+\PYG{c}{; Tailor this value to your application needs}
+\PYG{c}{; \PYGZlt{}h\PYGZgt{} Stack Configuration}
+\PYG{c}{;   \PYGZlt{}o\PYGZgt{} Stack Size (in Bytes) \PYGZlt{}0x0\PYGZhy{}0xFFFFFFFF:8\PYGZgt{}}
+\PYG{c}{; \PYGZlt{}/h\PYGZgt{}}
+
+\PYG{n+nf}{Stack\PYGZus{}Size}      \PYG{n+no}{EQU}     \PYG{l+m+mi}{0x0000800}
+
+                \PYG{n+nf}{AREA}    \PYG{n+no}{STACK}\PYG{p}{,} \PYG{n+no}{NOINIT}\PYG{p}{,} \PYG{n+no}{READWRITE}\PYG{p}{,} \PYG{n+no}{ALIGN}\PYG{err}{=}\PYG{l+m+mi}{3}
+\PYG{n+nf}{Stack\PYGZus{}Mem}       \PYG{n+no}{SPACE}   \PYG{n+no}{Stack\PYGZus{}Size}
+\PYG{n+nf}{\PYGZus{}\PYGZus{}initial\PYGZus{}sp}
+
+
+\PYG{c}{; \PYGZlt{}h\PYGZgt{} Heap Configuration}
+\PYG{c}{;   \PYGZlt{}o\PYGZgt{}  Heap Size (in Bytes) \PYGZlt{}0x0\PYGZhy{}0xFFFFFFFF:8\PYGZgt{}}
+\PYG{c}{; \PYGZlt{}/h\PYGZgt{}}
+
+\PYG{n+nf}{Heap\PYGZus{}Size}       \PYG{n+no}{EQU}     \PYG{l+m+mi}{0x00000800}
+
+                \PYG{n+nf}{AREA}    \PYG{n+no}{HEAP}\PYG{p}{,} \PYG{n+no}{NOINIT}\PYG{p}{,} \PYG{n+no}{READWRITE}\PYG{p}{,} \PYG{n+no}{ALIGN}\PYG{err}{=}\PYG{l+m+mi}{3}
+\PYG{n+nf}{\PYGZus{}\PYGZus{}heap\PYGZus{}base}
+\PYG{n+nf}{Heap\PYGZus{}Mem}        \PYG{n+no}{SPACE}   \PYG{n+no}{Heap\PYGZus{}Size}
+\PYG{n+nf}{\PYGZus{}\PYGZus{}heap\PYGZus{}limit}
+
+                \PYG{n+nf}{PRESERVE8}
+                \PYG{n+nf}{THUMB}
+
+
+\PYG{c}{; Vector Table Mapped to Address 0 at Reset}
+                \PYG{n+nf}{AREA}    \PYG{n+no}{RESET}\PYG{p}{,} \PYG{n+no}{DATA}\PYG{p}{,} \PYG{n+no}{READONLY}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{\PYGZus{}\PYGZus{}Vectors}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{\PYGZus{}\PYGZus{}Vectors\PYGZus{}End}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{\PYGZus{}\PYGZus{}Vectors\PYGZus{}Size}
+
+\PYG{n+nf}{\PYGZus{}\PYGZus{}Vectors}       \PYG{n+no}{DCD}     \PYG{n+no}{\PYGZus{}\PYGZus{}initial\PYGZus{}sp}                   \PYG{c}{; Top of Stack}
+                        \PYG{n+no}{DCD}     \PYG{n+no}{Reset\PYGZus{}Handler}                  \PYG{c}{; Reset Handler}
+                        \PYG{n+no}{DCD}     \PYG{n+no}{NMI\PYGZus{}Handler}                    \PYG{c}{; NMI Handler}
+                        \PYG{n+no}{DCD}     \PYG{n+no}{HardFault\PYGZus{}Handler}              \PYG{c}{; Hard Fault Handler}
+                        \PYG{n+no}{DCD}     \PYG{l+m+mi}{0}                              \PYG{c}{; Reserved}
+                        \PYG{n+no}{DCD}     \PYG{l+m+mi}{0}                              \PYG{c}{; Reserved}
+                        \PYG{n+no}{DCD}     \PYG{l+m+mi}{0}                              \PYG{c}{; Reserved}
+                        \PYG{n+no}{DCD}     \PYG{l+m+mi}{0}                              \PYG{c}{; Reserved}
+                        \PYG{n+no}{DCD}     \PYG{l+m+mi}{0}                              \PYG{c}{; Reserved}
+                        \PYG{n+no}{DCD}     \PYG{l+m+mi}{0}                              \PYG{c}{; Reserved}
+                        \PYG{n+no}{DCD}     \PYG{l+m+mi}{0}                              \PYG{c}{; Reserved}
+                        \PYG{n+no}{DCD}     \PYG{n+no}{SVC\PYGZus{}Handler}                    \PYG{c}{; SVCall Handler}
+                        \PYG{n+no}{DCD}     \PYG{l+m+mi}{0}                              \PYG{c}{; Reserved}
+                        \PYG{n+no}{DCD}     \PYG{l+m+mi}{0}                              \PYG{c}{; Reserved}
+                        \PYG{n+no}{DCD}     \PYG{n+no}{PendSV\PYGZus{}Handler}                 \PYG{c}{; PendSV Handler}
+                        \PYG{n+no}{DCD}     \PYG{n+no}{SysTick\PYGZus{}Handler}                \PYG{c}{; SysTick Handler}
+
+                \PYG{c}{; External Interrupts}
+                \PYG{n+nf}{DCD}     \PYG{n+no}{WWDG\PYGZus{}IRQHandler}                \PYG{c}{; Window Watchdog}
+                \PYG{n+no}{DCD}     \PYG{n+no}{PVD\PYGZus{}VDDIO2\PYGZus{}IRQHandler}          \PYG{c}{; PVD and VDDIO2 through EXTI Line detect}
+                \PYG{n+no}{DCD}     \PYG{n+no}{RTC\PYGZus{}IRQHandler}                 \PYG{c}{; RTC through EXTI Line}
+                \PYG{n+no}{DCD}     \PYG{n+no}{FLASH\PYGZus{}IRQHandler}               \PYG{c}{; FLASH}
+                \PYG{n+no}{DCD}     \PYG{n+no}{RCC\PYGZus{}CRS\PYGZus{}IRQHandler}             \PYG{c}{; RCC and CRS}
+                \PYG{n+no}{DCD}     \PYG{n+no}{EXTI0\PYGZus{}1\PYGZus{}IRQHandler}             \PYG{c}{; EXTI Line 0 and 1}
+                \PYG{n+no}{DCD}     \PYG{n+no}{EXTI2\PYGZus{}3\PYGZus{}IRQHandler}             \PYG{c}{; EXTI Line 2 and 3}
+                \PYG{n+no}{DCD}     \PYG{n+no}{EXTI4\PYGZus{}15\PYGZus{}IRQHandler}            \PYG{c}{; EXTI Line 4 to 15}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TSC\PYGZus{}IRQHandler}                  \PYG{c}{; TS}
+                \PYG{n+no}{DCD}     \PYG{n+no}{DMA1\PYGZus{}Channel1\PYGZus{}IRQHandler}       \PYG{c}{; DMA1 Channel 1}
+                \PYG{n+no}{DCD}     \PYG{n+no}{DMA1\PYGZus{}Channel2\PYGZus{}3\PYGZus{}IRQHandler}     \PYG{c}{; DMA1 Channel 2 and Channel 3}
+                \PYG{n+no}{DCD}     \PYG{n+no}{DMA1\PYGZus{}Channel4\PYGZus{}5\PYGZus{}6\PYGZus{}7\PYGZus{}IRQHandler} \PYG{c}{; DMA1 Channel 4, Channel 5, Channel 6 and Channel 7}
+                \PYG{n+no}{DCD}     \PYG{n+no}{ADC1\PYGZus{}COMP\PYGZus{}IRQHandler}           \PYG{c}{; ADC1, COMP1 and COMP2 }
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM1\PYGZus{}BRK\PYGZus{}UP\PYGZus{}TRG\PYGZus{}COM\PYGZus{}IRQHandler} \PYG{c}{; TIM1 Break, Update, Trigger and Commutation}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM1\PYGZus{}CC\PYGZus{}IRQHandler}             \PYG{c}{; TIM1 Capture Compare}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM2\PYGZus{}IRQHandler}                \PYG{c}{; TIM2}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM3\PYGZus{}IRQHandler}                \PYG{c}{; TIM3}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM6\PYGZus{}DAC\PYGZus{}IRQHandler}            \PYG{c}{; TIM6 and DAC}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM7\PYGZus{}IRQHandler}                \PYG{c}{; TIM7}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM14\PYGZus{}IRQHandler}               \PYG{c}{; TIM14}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM15\PYGZus{}IRQHandler}               \PYG{c}{; TIM15}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM16\PYGZus{}IRQHandler}               \PYG{c}{; TIM16}
+                \PYG{n+no}{DCD}     \PYG{n+no}{TIM17\PYGZus{}IRQHandler}               \PYG{c}{; TIM17}
+                \PYG{n+no}{DCD}     \PYG{n+no}{I2C1\PYGZus{}IRQHandler}                \PYG{c}{; I2C1}
+                \PYG{n+no}{DCD}     \PYG{n+no}{I2C2\PYGZus{}IRQHandler}                \PYG{c}{; I2C2}
+                \PYG{n+no}{DCD}     \PYG{n+no}{SPI1\PYGZus{}IRQHandler}                \PYG{c}{; SPI1}
+                \PYG{n+no}{DCD}     \PYG{n+no}{SPI2\PYGZus{}IRQHandler}                \PYG{c}{; SPI2}
+                \PYG{n+no}{DCD}     \PYG{n+no}{USART1\PYGZus{}IRQHandler}              \PYG{c}{; USART1}
+                \PYG{n+no}{DCD}     \PYG{n+no}{USART2\PYGZus{}IRQHandler}              \PYG{c}{; USART2}
+                \PYG{n+no}{DCD}     \PYG{n+no}{USART3\PYGZus{}4\PYGZus{}IRQHandler}            \PYG{c}{; USART3 and USART4}
+                \PYG{n+no}{DCD}     \PYG{n+no}{CEC\PYGZus{}CAN\PYGZus{}IRQHandler}             \PYG{c}{; CEC and CAN}
+                \PYG{n+no}{DCD}     \PYG{n+no}{USB\PYGZus{}IRQHandler}              \PYG{c}{; USB}
+                
+\PYG{n+no}{\PYGZus{}\PYGZus{}Vectors\PYGZus{}End}
+
+\PYG{n+nf}{\PYGZus{}\PYGZus{}Vectors\PYGZus{}Size}  \PYG{n+no}{EQU}  \PYG{n+no}{\PYGZus{}\PYGZus{}Vectors\PYGZus{}End} \PYG{p}{\PYGZhy{}} \PYG{n+no}{\PYGZus{}\PYGZus{}Vectors}
+
+                \PYG{n+nf}{AREA}    \PYG{err}{|}\PYG{n+no}{.text}\PYG{err}{|}\PYG{p}{,} \PYG{n+no}{CODE}\PYG{p}{,} \PYG{n+no}{READONLY}
+
+\PYG{c}{; Reset handler routine}
+\PYG{n+nf}{Reset\PYGZus{}Handler}    \PYG{n+no}{PROC}
+                 \PYG{n+nf}{EXPORT}  \PYG{n+no}{Reset\PYGZus{}Handler}                 \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+        \PYG{n+nf}{IMPORT}  \PYG{n+no}{\PYGZus{}\PYGZus{}main}
+        \PYG{n+nf}{IMPORT}  \PYG{n+no}{SystemInit}  
+                 \PYG{n+no}{LDR}     \PYG{n+no}{R0}\PYG{p}{,} \PYG{err}{=}\PYG{n+no}{SystemInit}
+                 \PYG{n+nf}{BLX}     \PYG{n+no}{R0}
+                 \PYG{n+nf}{LDR}     \PYG{n+no}{R0}\PYG{p}{,} \PYG{err}{=}\PYG{n+no}{\PYGZus{}\PYGZus{}main}
+                 \PYG{n+nf}{BX}      \PYG{n+no}{R0}
+                 \PYG{n+nf}{ENDP}
+
+\PYG{c}{; Dummy Exception Handlers (infinite loops which can be modified)}
+
+\PYG{n+nf}{NMI\PYGZus{}Handler}     \PYG{n+no}{PROC}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{NMI\PYGZus{}Handler}                    \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{B}       \PYG{p}{.}
+                \PYG{n+nf}{ENDP}
+\PYG{n+nf}{HardFault\PYGZus{}Handler}\PYG{err}{\PYGZbs{}}
+                \PYG{n+nf}{PROC}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{HardFault\PYGZus{}Handler}              \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{B}       \PYG{p}{.}
+                \PYG{n+nf}{ENDP}
+\PYG{n+nf}{SVC\PYGZus{}Handler}     \PYG{n+no}{PROC}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{SVC\PYGZus{}Handler}                    \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{B}       \PYG{p}{.}
+                \PYG{n+nf}{ENDP}
+\PYG{n+nf}{PendSV\PYGZus{}Handler}  \PYG{n+no}{PROC}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{PendSV\PYGZus{}Handler}                 \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+				\PYG{n+nf}{mrs} \PYG{n+no}{r0}\PYG{p}{,} \PYG{n+no}{psp}
+				\PYG{n+nf}{subs} \PYG{n+no}{r0}\PYG{p}{,} \PYG{n+no}{r0}\PYG{p}{,} \PYG{c}{\PYGZsh{}32}
+				\PYG{n+no}{stm} \PYG{n+no}{r0}\PYG{p}{!,} \PYG{err}{\PYGZob{}}\PYG{n+no}{r4\PYGZhy{}r7}\PYG{err}{\PYGZcb{}}			
+				\PYG{n+no}{mov} \PYG{n+no}{r4}\PYG{p}{,} \PYG{n+no}{r8}					
+				\PYG{n+no}{mov} \PYG{n+no}{r5}\PYG{p}{,} \PYG{n+no}{r9}
+				\PYG{n+nf}{mov} \PYG{n+no}{r6}\PYG{p}{,} \PYG{n+no}{r10}
+				\PYG{n+nf}{mov} \PYG{n+no}{r7}\PYG{p}{,} \PYG{n+no}{r11}
+				\PYG{n+nf}{stm} \PYG{n+no}{r0}\PYG{p}{!,} \PYG{err}{\PYGZob{}}\PYG{n+no}{r4\PYGZhy{}r7}\PYG{err}{\PYGZcb{}}
+				\PYG{n+nf}{subs} \PYG{n+no}{r0}\PYG{p}{,} \PYG{n+no}{r0}\PYG{p}{,} \PYG{c}{\PYGZsh{}16}
+				\PYG{n+no}{mov} \PYG{n+no}{r5}\PYG{p}{,} \PYG{n+no}{r14}					\PYG{c}{; save LR in R5}
+				\PYG{n+no}{IMPORT}  \PYG{n+no}{APOS\PYGZus{}SetPSP}
+                \PYG{n+nf}{LDR}     \PYG{n+no}{R0}\PYG{p}{,} \PYG{err}{=}\PYG{n+no}{APOS\PYGZus{}SetPSP}	\PYG{c}{; call C\PYGZhy{}Function}
+                \PYG{n+no}{BLX}     \PYG{n+no}{R0}					\PYG{c}{; to set psp for next Task}
+				\PYG{n+no}{mov} \PYG{n+no}{r14}\PYG{p}{,} \PYG{n+no}{r5}					\PYG{c}{; get LR back from R5}
+				\PYG{n+no}{subs} \PYG{n+no}{r0}\PYG{p}{,} \PYG{n+no}{r0}\PYG{p}{,} \PYG{c}{\PYGZsh{}16}
+				\PYG{n+no}{ldm} \PYG{n+no}{r0}\PYG{p}{!,} \PYG{err}{\PYGZob{}}\PYG{n+no}{r4\PYGZhy{}r7}\PYG{err}{\PYGZcb{}}
+				\PYG{n+nf}{mov} \PYG{n+no}{r8}\PYG{p}{,} \PYG{n+no}{r4}
+				\PYG{n+nf}{mov} \PYG{n+no}{r9}\PYG{p}{,} \PYG{n+no}{r5}
+				\PYG{n+nf}{mov} \PYG{n+no}{r10}\PYG{p}{,} \PYG{n+no}{r6}
+				\PYG{n+nf}{mov} \PYG{n+no}{r11}\PYG{p}{,} \PYG{n+no}{r7}
+				\PYG{n+nf}{subs} \PYG{n+no}{r0}\PYG{p}{,} \PYG{n+no}{r0}\PYG{p}{,} \PYG{c}{\PYGZsh{}32}
+				\PYG{n+no}{ldm} \PYG{n+no}{r0}\PYG{p}{!,} \PYG{err}{\PYGZob{}}\PYG{n+no}{r4\PYGZhy{}r7}\PYG{err}{\PYGZcb{}}
+                \PYG{n+nf}{BX}     \PYG{n+no}{LR}
+                \PYG{n+nf}{ENDP}
+\PYG{n+nf}{SysTick\PYGZus{}Handler} \PYG{n+no}{PROC}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{SysTick\PYGZus{}Handler}                \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{B}       \PYG{p}{.}
+                \PYG{n+nf}{ENDP}
+\PYG{n+nf}{Default\PYGZus{}Handler} \PYG{n+no}{PROC}
+
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{WWDG\PYGZus{}IRQHandler}                \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{PVD\PYGZus{}VDDIO2\PYGZus{}IRQHandler}          \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{RTC\PYGZus{}IRQHandler}                 \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{FLASH\PYGZus{}IRQHandler}               \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{RCC\PYGZus{}CRS\PYGZus{}IRQHandler}             \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{EXTI0\PYGZus{}1\PYGZus{}IRQHandler}             \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{EXTI2\PYGZus{}3\PYGZus{}IRQHandler}             \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{EXTI4\PYGZus{}15\PYGZus{}IRQHandler}            \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TSC\PYGZus{}IRQHandler}                  \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{DMA1\PYGZus{}Channel1\PYGZus{}IRQHandler}       \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{DMA1\PYGZus{}Channel2\PYGZus{}3\PYGZus{}IRQHandler}     \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{DMA1\PYGZus{}Channel4\PYGZus{}5\PYGZus{}6\PYGZus{}7\PYGZus{}IRQHandler} \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{ADC1\PYGZus{}COMP\PYGZus{}IRQHandler}           \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM1\PYGZus{}BRK\PYGZus{}UP\PYGZus{}TRG\PYGZus{}COM\PYGZus{}IRQHandler} \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM1\PYGZus{}CC\PYGZus{}IRQHandler}             \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM2\PYGZus{}IRQHandler}                \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM3\PYGZus{}IRQHandler}                \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM6\PYGZus{}DAC\PYGZus{}IRQHandler}            \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM7\PYGZus{}IRQHandler}                \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM14\PYGZus{}IRQHandler}               \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM15\PYGZus{}IRQHandler}               \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM16\PYGZus{}IRQHandler}               \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{TIM17\PYGZus{}IRQHandler}               \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{I2C1\PYGZus{}IRQHandler}                \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{I2C2\PYGZus{}IRQHandler}                \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{SPI1\PYGZus{}IRQHandler}                \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{SPI2\PYGZus{}IRQHandler}                \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{USART1\PYGZus{}IRQHandler}              \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{USART2\PYGZus{}IRQHandler}              \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{USART3\PYGZus{}4\PYGZus{}IRQHandler}            \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{CEC\PYGZus{}CAN\PYGZus{}IRQHandler}             \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+                \PYG{n+nf}{EXPORT}  \PYG{n+no}{USB\PYGZus{}IRQHandler}                 \PYG{p}{[}\PYG{n+no}{WEAK}\PYG{p}{]}
+
+
+\PYG{n+nf}{WWDG\PYGZus{}IRQHandler}
+\PYG{n+nf}{PVD\PYGZus{}VDDIO2\PYGZus{}IRQHandler}
+\PYG{n+nf}{RTC\PYGZus{}IRQHandler}
+\PYG{n+nf}{FLASH\PYGZus{}IRQHandler}
+\PYG{n+nf}{RCC\PYGZus{}CRS\PYGZus{}IRQHandler}
+\PYG{n+nf}{EXTI0\PYGZus{}1\PYGZus{}IRQHandler}
+\PYG{n+nf}{EXTI2\PYGZus{}3\PYGZus{}IRQHandler}
+\PYG{n+nf}{EXTI4\PYGZus{}15\PYGZus{}IRQHandler}
+\PYG{n+nf}{TSC\PYGZus{}IRQHandler}
+\PYG{n+nf}{DMA1\PYGZus{}Channel1\PYGZus{}IRQHandler}
+\PYG{n+nf}{DMA1\PYGZus{}Channel2\PYGZus{}3\PYGZus{}IRQHandler}
+\PYG{n+nf}{DMA1\PYGZus{}Channel4\PYGZus{}5\PYGZus{}6\PYGZus{}7\PYGZus{}IRQHandler}
+\PYG{n+nf}{ADC1\PYGZus{}COMP\PYGZus{}IRQHandler} 
+\PYG{n+no}{TIM1\PYGZus{}BRK\PYGZus{}UP\PYGZus{}TRG\PYGZus{}COM\PYGZus{}IRQHandler}
+\PYG{n+nf}{TIM1\PYGZus{}CC\PYGZus{}IRQHandler}
+\PYG{n+nf}{TIM2\PYGZus{}IRQHandler}
+\PYG{n+nf}{TIM3\PYGZus{}IRQHandler}
+\PYG{n+nf}{TIM6\PYGZus{}DAC\PYGZus{}IRQHandler}
+\PYG{n+nf}{TIM7\PYGZus{}IRQHandler}
+\PYG{n+nf}{TIM14\PYGZus{}IRQHandler}
+\PYG{n+nf}{TIM15\PYGZus{}IRQHandler}
+\PYG{n+nf}{TIM16\PYGZus{}IRQHandler}
+\PYG{n+nf}{TIM17\PYGZus{}IRQHandler}
+\PYG{n+nf}{I2C1\PYGZus{}IRQHandler}
+\PYG{n+nf}{I2C2\PYGZus{}IRQHandler}
+\PYG{n+nf}{SPI1\PYGZus{}IRQHandler}
+\PYG{n+nf}{SPI2\PYGZus{}IRQHandler}
+\PYG{n+nf}{USART1\PYGZus{}IRQHandler}
+\PYG{n+nf}{USART2\PYGZus{}IRQHandler}
+\PYG{n+nf}{USART3\PYGZus{}4\PYGZus{}IRQHandler}
+\PYG{n+nf}{CEC\PYGZus{}CAN\PYGZus{}IRQHandler}
+\PYG{n+nf}{USB\PYGZus{}IRQHandler}   
+
+                \PYG{n+no}{B}       \PYG{p}{.}
+
+                \PYG{n+nf}{ENDP}
+
+                \PYG{n+nf}{ALIGN}
+
+\PYG{c}{;*******************************************************************************}
+\PYG{c}{; User Stack and Heap initialization}
+\PYG{c}{;*******************************************************************************}
+                 \PYG{n+nf}{IF}      \PYG{p}{:}\PYG{n+no}{DEF}\PYG{p}{:}\PYG{n+no}{\PYGZus{}\PYGZus{}MICROLIB}
+                
+                 \PYG{n+nf}{EXPORT}  \PYG{n+no}{\PYGZus{}\PYGZus{}initial\PYGZus{}sp}
+                 \PYG{n+nf}{EXPORT}  \PYG{n+no}{\PYGZus{}\PYGZus{}heap\PYGZus{}base}
+                 \PYG{n+nf}{EXPORT}  \PYG{n+no}{\PYGZus{}\PYGZus{}heap\PYGZus{}limit}
+                
+                 \PYG{n+nf}{ELSE}
+                
+                 \PYG{n+nf}{IMPORT}  \PYG{n+no}{\PYGZus{}\PYGZus{}use\PYGZus{}two\PYGZus{}region\PYGZus{}memory}
+                 \PYG{n+nf}{EXPORT}  \PYG{n+no}{\PYGZus{}\PYGZus{}user\PYGZus{}initial\PYGZus{}stackheap}
+                 
+\PYG{n+nf}{\PYGZus{}\PYGZus{}user\PYGZus{}initial\PYGZus{}stackheap}
+
+                 \PYG{n+nf}{LDR}     \PYG{n+no}{R0}\PYG{p}{,} \PYG{err}{=}  \PYG{n+no}{Heap\PYGZus{}Mem}
+                 \PYG{n+nf}{LDR}     \PYG{n+no}{R1}\PYG{p}{,} \PYG{err}{=}\PYG{p}{(}\PYG{n+no}{Stack\PYGZus{}Mem} \PYG{err}{+} \PYG{n+no}{Stack\PYGZus{}Size}\PYG{p}{)}
+                 \PYG{n+nf}{LDR}     \PYG{n+no}{R2}\PYG{p}{,} \PYG{err}{=} \PYG{p}{(}\PYG{n+no}{Heap\PYGZus{}Mem} \PYG{err}{+}  \PYG{n+no}{Heap\PYGZus{}Size}\PYG{p}{)}
+                 \PYG{n+nf}{LDR}     \PYG{n+no}{R3}\PYG{p}{,} \PYG{err}{=} \PYG{n+no}{Stack\PYGZus{}Mem}
+                 \PYG{n+nf}{BX}      \PYG{n+no}{LR}
+
+                 \PYG{n+nf}{ALIGN}
+
+                 \PYG{n+nf}{ENDIF}
+
+                 \PYG{n+nf}{END}
+
+\PYG{c}{;************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE*****}
+\end{Verbatim}

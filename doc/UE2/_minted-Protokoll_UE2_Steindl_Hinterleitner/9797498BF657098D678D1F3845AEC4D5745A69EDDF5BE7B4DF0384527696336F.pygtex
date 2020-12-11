@@ -1,0 +1,82 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+	\PYG{n+nf}{AREA}    \PYG{err}{|}\PYG{n+no}{.text}\PYG{err}{|}\PYG{p}{,} \PYG{n+no}{CODE}\PYG{p}{,} \PYG{n+no}{READONLY}
+
+
+\PYG{n+nf}{FillTaskA}	\PYG{n+no}{PROC}
+			\PYG{n+nf}{EXPORT} \PYG{n+no}{FillTaskA}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R0}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA0}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R1}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA1}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R2}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA2}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R3}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA3}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R4}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA4}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R5}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA5}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R6}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA6}
+			
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA8}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R8}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA9}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R9}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xAA}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R10}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xAB}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R11}\PYG{p}{,}	\PYG{n+no}{R7}
+			
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xAC}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R12}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xA7}
+			\PYG{n+no}{BX}		\PYG{n+no}{LR}	
+			\PYG{n+no}{ENDP}
+
+ 
+\PYG{n+nf}{FillTaskB}	\PYG{n+no}{PROC}
+			\PYG{n+nf}{EXPORT} \PYG{n+no}{FillTaskB}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R0}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB0}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R1}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB1}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R2}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB2}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R3}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB3}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R4}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB4}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R5}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB5}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R6}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB6}
+			
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB8}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R8}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB9}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R9}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xBA}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R10}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xBB}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R11}\PYG{p}{,}	\PYG{n+no}{R7}
+			
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xBC}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R12}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xB7}
+			\PYG{n+no}{BX}		\PYG{n+no}{LR}	
+			\PYG{n+no}{ENDP}
+
+\PYG{n+nf}{FillTaskC}	\PYG{n+no}{PROC}
+			\PYG{n+nf}{EXPORT} \PYG{n+no}{FillTaskC}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R0}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC0}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R1}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC1}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R2}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC2}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R3}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC3}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R4}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC4}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R5}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC5}
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R6}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC6}
+			
+			\PYG{n+no}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC8}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R8}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC9}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R9}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xCA}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R10}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xCB}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R11}\PYG{p}{,}	\PYG{n+no}{R7}
+			
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xCC}
+			\PYG{n+no}{MOV}		\PYG{n+no}{R12}\PYG{p}{,} 	\PYG{n+no}{R7}
+			\PYG{n+nf}{MOVS}	\PYG{n+no}{R7}\PYG{p}{,} 	\PYG{c}{\PYGZsh{}0xC7}
+			\PYG{n+no}{BX}		\PYG{n+no}{LR}	
+			\PYG{n+no}{ENDP}
+
+	\PYG{n+nf}{END}
+\end{Verbatim}

@@ -1,0 +1,142 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             |.text|, CODE, READONLY
+    2 00000000         
+    3 00000000         
+    4 00000000         
+    5 00000000         FillTaskA
+                               PROC
+    6 00000000                 EXPORT           FillTaskA
+    7 00000000 20A0            MOVS             R0,  #0xA0
+    8 00000002 21A1            MOVS             R1,  #0xA1
+    9 00000004 22A2            MOVS             R2,  #0xA2
+   10 00000006 23A3            MOVS             R3,  #0xA3
+   11 00000008 24A4            MOVS             R4,  #0xA4
+   12 0000000A 25A5            MOVS             R5,  #0xA5
+   13 0000000C 26A6            MOVS             R6,  #0xA6
+   14 0000000E         
+   15 0000000E 27A8            MOVS             R7,  #0xA8
+   16 00000010 46B8            MOV              R8,  R7
+   17 00000012 27A9            MOVS             R7,  #0xA9
+   18 00000014 46B9            MOV              R9,  R7
+   19 00000016 27AA            MOVS             R7,  #0xAA
+   20 00000018 46BA            MOV              R10,  R7
+   21 0000001A 27AB            MOVS             R7,  #0xAB
+   22 0000001C 46BB            MOV              R11, R7
+   23 0000001E         
+   24 0000001E 27AC            MOVS             R7,  #0xAC
+   25 00000020 46BC            MOV              R12,  R7
+   26 00000022 27A7            MOVS             R7,  #0xA7
+   27 00000024 4770            BX               LR
+   28 00000026                 ENDP
+   29 00000026         
+   30 00000026         
+   31 00000026         FillTaskB
+                               PROC
+   32 00000026                 EXPORT           FillTaskB
+   33 00000026 20B0            MOVS             R0,  #0xB0
+   34 00000028 21B1            MOVS             R1,  #0xB1
+   35 0000002A 22B2            MOVS             R2,  #0xB2
+   36 0000002C 23B3            MOVS             R3,  #0xB3
+   37 0000002E 24B4            MOVS             R4,  #0xB4
+   38 00000030 25B5            MOVS             R5,  #0xB5
+   39 00000032 26B6            MOVS             R6,  #0xB6
+   40 00000034         
+   41 00000034 27B8            MOVS             R7,  #0xB8
+   42 00000036 46B8            MOV              R8,  R7
+   43 00000038 27B9            MOVS             R7,  #0xB9
+   44 0000003A 46B9            MOV              R9,  R7
+   45 0000003C 27BA            MOVS             R7,  #0xBA
+   46 0000003E 46BA            MOV              R10,  R7
+   47 00000040 27BB            MOVS             R7,  #0xBB
+   48 00000042 46BB            MOV              R11, R7
+   49 00000044         
+   50 00000044 27BC            MOVS             R7,  #0xBC
+   51 00000046 46BC            MOV              R12,  R7
+   52 00000048 27B7            MOVS             R7,  #0xB7
+   53 0000004A 4770            BX               LR
+   54 0000004C                 ENDP
+   55 0000004C         
+   56 0000004C         FillTaskC
+                               PROC
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   57 0000004C                 EXPORT           FillTaskC
+   58 0000004C 20C0            MOVS             R0,  #0xC0
+   59 0000004E 21C1            MOVS             R1,  #0xC1
+   60 00000050 22C2            MOVS             R2,  #0xC2
+   61 00000052 23C3            MOVS             R3,  #0xC3
+   62 00000054 24C4            MOVS             R4,  #0xC4
+   63 00000056 25C5            MOVS             R5,  #0xC5
+   64 00000058 26C6            MOVS             R6,  #0xC6
+   65 0000005A         
+   66 0000005A 27C8            MOVS             R7,  #0xC8
+   67 0000005C 46B8            MOV              R8,  R7
+   68 0000005E 27C9            MOVS             R7,  #0xC9
+   69 00000060 46B9            MOV              R9,  R7
+   70 00000062 27CA            MOVS             R7,  #0xCA
+   71 00000064 46BA            MOV              R10,  R7
+   72 00000066 27CB            MOVS             R7,  #0xCB
+   73 00000068 46BB            MOV              R11, R7
+   74 0000006A         
+   75 0000006A 27CC            MOVS             R7,  #0xCC
+   76 0000006C 46BC            MOV              R12,  R7
+   77 0000006E 27C7            MOVS             R7,  #0xC7
+   78 00000070 4770            BX               LR
+   79 00000072                 ENDP
+   80 00000072         
+   81 00000072                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0 --apcs=interw
+ork --depend=.\output\apos_1.d -o.\output\apos_1.o -IC:\Users\r.hif\AppData\Loc
+al\Arm\Packs\Keil\STM32F0xx_DFP\2.1.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include
+ -IC:\bin\Keil_v5\ARM\CMSIS\Include --predefine="__EVAL SETA 1" --predefine="__
+MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 532" --predefine="STM32F07
+2xB SETA 1" --list=.\listing\apos.lst src\APOS.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 1 in file src\APOS.s
+   Uses
+      None
+Comment: .text unused
+FillTaskA 00000000
+
+Symbol: FillTaskA
+   Definitions
+      At line 5 in file src\APOS.s
+   Uses
+      At line 6 in file src\APOS.s
+Comment: FillTaskA used once
+FillTaskB 00000026
+
+Symbol: FillTaskB
+   Definitions
+      At line 31 in file src\APOS.s
+   Uses
+      At line 32 in file src\APOS.s
+Comment: FillTaskB used once
+FillTaskC 0000004C
+
+Symbol: FillTaskC
+   Definitions
+      At line 56 in file src\APOS.s
+   Uses
+      At line 57 in file src\APOS.s
+Comment: FillTaskC used once
+4 symbols
+338 symbols in table

@@ -1,0 +1,70 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{err}{\PYGZsh{}}\PYG{n}{ifndef} \PYG{n}{\PYGZus{}\PYGZus{}APOS}
+\PYG{err}{\PYGZsh{}}\PYG{n}{define} \PYG{n}{\PYGZus{}\PYGZus{}APOS}
+
+
+\PYG{err}{\PYGZsh{}}\PYG{n}{include} \PYG{l+s}{\PYGZdq{}Services/StdDef.h\PYGZdq{}}
+\PYG{c+c1}{// \PYGZsh{}include \PYGZdq{}BSP/systick.h\PYGZdq{}}
+\PYG{c+c1}{// \PYGZsh{}include \PYGZdq{}stm32f0xx\PYGZus{}gpio.h\PYGZdq{}}
+\PYG{c+c1}{// \PYGZsh{}include \PYGZdq{}TaskAll.h\PYGZdq{}}
+\PYG{c+c1}{// \PYGZsh{}include \PYGZlt{}stdio.h\PYGZgt{}}
+
+\PYG{c+c1}{// for debugging}
+\PYG{err}{\PYGZsh{}}\PYG{n}{define} \PYG{n}{DEBUG}
+
+\PYG{n}{typedef} \PYG{n+nf}{void} \PYG{o}{(*}\PYG{n}{Routine}\PYG{o}{)(}\PYG{k+kt}{void}\PYG{o}{);}
+
+
+\PYG{c+c1}{// Schritt 1:}
+\PYG{k+kt}{void} \PYG{n+nf}{TaskA}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{TaskB}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{TaskC}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{FillTaskA}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{FillTaskB}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{FillTaskC}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+
+\PYG{c+c1}{// setzt des PendSV Bit um einen TaskSwitch auszuloesen}
+\PYG{k+kt}{void}	\PYG{n+nf}{setPendSV}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+
+
+\PYG{c+c1}{// Schritt 4:}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}EnterRegion}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}LeaveRegion}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+\PYG{k+kt}{int}	 \PYG{n+nf}{APOS\PYGZus{}TestRegion}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+
+\PYG{c+c1}{// Schritt 5:}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Delay} \PYG{o}{(}\PYG{n}{uint32\PYGZus{}t} \PYG{n}{ticks}\PYG{o}{);}
+	 
+
+\PYG{n}{typedef} \PYG{n}{struct}
+\PYG{o}{\PYGZob{}}
+	\PYG{n}{uint32\PYGZus{}t} \PYG{n}{prio}\PYG{o}{;}
+	\PYG{n}{Routine} \PYG{n}{routine}\PYG{o}{;}
+	\PYG{n}{uint32\PYGZus{}t} \PYG{n}{pStack}\PYG{o}{;}
+	\PYG{n}{uint32\PYGZus{}t} \PYG{n}{stackSize}\PYG{o}{;}
+	\PYG{n}{uint32\PYGZus{}t} \PYG{n}{timeSlice}\PYG{o}{;}
+ \PYG{err}{\PYGZsh{}}\PYG{n}{ifdef} \PYG{n}{DEBUG}
+	\PYG{k+kt}{char} \PYG{o}{*} \PYG{n}{pTaskName}\PYG{o}{;}
+ \PYG{err}{\PYGZsh{}}\PYG{n}{endif}
+	
+\PYG{o}{\PYGZcb{}}\PYG{n}{APOS\PYGZus{}TCB\PYGZus{}STRUCT}\PYG{o}{;}
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Init}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}  													\PYG{c+c1}{// Initialisert das Echtzeitbetriebssystem}
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}TASK\PYGZus{}Create}\PYG{o}{(} \PYG{n}{APOS\PYGZus{}TCB\PYGZus{}STRUCT}\PYG{o}{*} \PYG{n}{pTask}\PYG{o}{,}  	\PYG{c+c1}{// TaskControlBlock}
+					\PYG{err}{\PYGZsh{}}\PYG{n}{ifdef} \PYG{n}{DEBUG}
+						\PYG{k+kd}{const} \PYG{k+kt}{char}\PYG{o}{*} \PYG{n}{pTaskName}\PYG{o}{,} 								\PYG{c+c1}{// Task Name ñ nur fuer Debug\PYGZhy{}Zwecke}
+					\PYG{err}{\PYGZsh{}}\PYG{n}{endif}
+						\PYG{n}{uint32\PYGZus{}t} \PYG{n}{Priority}\PYG{o}{,}  									\PYG{c+c1}{// Priorit‰t des Tasks vorerst nicht in Verwendung}
+						\PYG{k+kt}{void} \PYG{o}{(*}\PYG{n}{pRoutine}\PYG{o}{)(}\PYG{k+kt}{void}\PYG{o}{),}  							\PYG{c+c1}{// Startadresse Task (ROM)}
+						\PYG{k+kt}{void}\PYG{o}{*} \PYG{n}{pStack}\PYG{o}{,} 												\PYG{c+c1}{// Startadresse Stack des Tasks (RAM)}
+						\PYG{n}{uint32\PYGZus{}t} \PYG{n}{StackSize}\PYG{o}{,}  									\PYG{c+c1}{// Groeﬂe des Stacks}
+						\PYG{n}{uint32\PYGZus{}t} \PYG{n}{TimeSlice}  									\PYG{c+c1}{// Time\PYGZhy{}Slice fuer Round Robin Scheduling}
+						\PYG{o}{);}
+
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Start}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}  \PYG{c+c1}{// Starten des Echtzeitbetriebssystems}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}Scheduler}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}  \PYG{c+c1}{// OS Scheduler}
+\PYG{k+kt}{void} \PYG{n+nf}{APOS\PYGZus{}SetPSP}\PYG{o}{(}\PYG{k+kt}{void}\PYG{o}{);}
+						
+\PYG{err}{\PYGZsh{}}\PYG{n}{endif} \PYG{c+c1}{// \PYGZus{}\PYGZus{}APOS}
+\end{Verbatim}
