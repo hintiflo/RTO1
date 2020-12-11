@@ -61,7 +61,9 @@ static void MandelBrot (void)
 
 					} else {
 						if(isInside) { 
-						Tft_DrawPixel(y, x + OFFSET);
+							APOS_EnterRegion();
+							Tft_DrawPixel(y, x + OFFSET);
+							APOS_LeaveRegion();
 						}
 						isInside = TRUE;
 						x++;
@@ -83,7 +85,9 @@ void TaskMandelbrot (void)
 	static uint32_t last = 0;
 
 	if((Systick_GetTick() - last) > TEXT_INTER) {
+		APOS_EnterRegion();
 		Tft_DrawString(10, 18+5*24, "ManBr ");
+		APOS_LeaveRegion();
 		last = Systick_GetTick();
 	}
 

@@ -19,8 +19,10 @@ void TaskCounter (void)
 	{
 		counter++;
 		snprintf(tmpBuf, MAX_LEN, "%d", counter);
-		Tft_DrawString(10, 18+0*24, "Cnt ");	
-		Tft_DrawString(10 + 16*7, 18+0*24, tmpBuf);		
+		APOS_EnterRegion();
+		Tft_DrawString(10, 18+0*24, "Cnt ");
+		Tft_DrawString(10 + 16*7, 18+0*24, tmpBuf);
+		APOS_LeaveRegion();
 		//APOS_Scheduler();
 
 	}

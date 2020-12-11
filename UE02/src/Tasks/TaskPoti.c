@@ -20,19 +20,21 @@ void TaskPoti (void)
 	int32_t adcValue = 0;
 	adcValue = Adc_GetValue(0);
 	
-	snprintf(adcBuf, MAX_ADC_LEN, "%d", adcValue);	
+	snprintf(adcBuf, MAX_ADC_LEN, "%d", adcValue);
+	APOS_EnterRegion();
 	Tft_DrawString(10, 18+4*24, "Poti ");	
 	Tft_DrawString(10 + 16*7, 18+4*24, adcBuf);		
-
+	APOS_LeaveRegion();
 		while (1) 
 		{
 				int32_t adcValue = 0;
 				adcValue = Adc_GetValue(0);
 				
-				snprintf(adcBuf, MAX_ADC_LEN, "%d", adcValue);	
+				snprintf(adcBuf, MAX_ADC_LEN, "%d", adcValue);
+				APOS_EnterRegion();
 				Tft_DrawString(10, 18+4*24, "Poti ");	
 				Tft_DrawString(10 + 16*7, 18+4*24, adcBuf);		
-				
+				APOS_LeaveRegion();
 			//APOS_Scheduler();
 		}
 }

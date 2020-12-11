@@ -54,7 +54,9 @@ void TaskKey (void)
 		}
 		
 		if(print) {
+			APOS_EnterRegion();
 			Tft_DrawString(10, 18+1*24, output);
+			APOS_LeaveRegion();
 			print = FALSE;
 		}
 		//APOS_Scheduler();

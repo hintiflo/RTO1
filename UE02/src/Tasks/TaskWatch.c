@@ -23,8 +23,9 @@ void TaskWatch (void)
 				sec %= 60;
 				
 				snprintf(output, NUM_CHAR, "Watch: %02d:%02d", min, sec);
-
+				APOS_EnterRegion();
 				Tft_DrawString(10, 18+3*24, output);	
+				APOS_LeaveRegion();
 			}
 			//APOS_Delay(INTERVAL_WATCH);
 			//APOS_Scheduler();
