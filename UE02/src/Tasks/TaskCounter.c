@@ -13,7 +13,7 @@ static char tmpBuf[MAX_LEN];
 
 void TaskCounter (void)
 {
-	uint32_t counter = 0;
+	static uint32_t counter = 0;
 	
 	while(1)
 	{

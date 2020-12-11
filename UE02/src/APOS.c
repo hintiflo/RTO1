@@ -112,12 +112,11 @@ void APOS_Scheduler(void)
 	static int lastTick = 0;
 	if(IS_Initialized)
 	{
-		int tick = Systick_GetTick();
 		if(lastTick == 0)
-		{	lastTick = tick;
+		{	lastTick = Systick_GetTick();
 			setPendSV();
 		}	
-		else if((tick - lastTick) >= pTasks[currentTask]->timeSlice || !APOS_Running()) // wenn timeSlice des aktuellen abgelaufen, dann
+		else if((Systick_GetTick() - lastTick) >= pTasks[currentTask]->timeSlice || !APOS_Running()) // wenn timeSlice des aktuellen abgelaufen, dann
 		//if((tick - lastTick) > 0) 										// wenn SysTick erhöht wurde
 		{
 			lastTick = Systick_GetTick();
