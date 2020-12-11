@@ -118,8 +118,12 @@ void APOS_Scheduler(void)
 			setPendSV();
 		}	
 		else if((tick - lastTick) >= pTasks[currentTask]->timeSlice || !APOS_Running()) // wenn timeSlice des aktuellen abgelaufen, dann
-		//if((tick - lastTick) > 0) 										// wenn SysTick erhöht wurde
-		{
+		{																// Task Switch ausloesen
+
+			if(!verifyStackEnd())			// Intergrität des aktuellen Stacks verifizieren
+				{	// __aeabi_assert("corrupt Stack", "APOS.c", 125);
+				}
+
 			lastTick = Systick_GetTick();
 			setPendSV();																// PendSV Handler auslösen
 		} //else 
@@ -193,4 +197,16 @@ static BOOL APOS_Running(void) {
 			return FALSE;
 			break;
 	}
+}
+
+
+
+
+// Testen, ob das Ende des Stacks = "STACK-END", also nicht ueberschrieben wurde
+// retourniert '1' bei korrektem Stack, '0' bei Fehler
+int verifyStackEnd(void) 
+{    
+        if(STACK_END != GET_STACK_END(pTasks[currentTask]->pStack, pTasks[currentTask]->stackSize))
+                return 0;
+        else    return 1;
 }
