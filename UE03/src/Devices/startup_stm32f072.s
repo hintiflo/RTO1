@@ -151,21 +151,22 @@ SVC_Handler     PROC
                 ENDP
 PendSV_Handler  PROC
                 EXPORT  PendSV_Handler                 [WEAK]
-	
-;                B       .				; infinite loop, deactivated
 				mrs r0, psp
-				stm r0!, {r4-r7}
-				mov r4, r8
+				subs r0, r0, #32
+				stm r0!, {r4-r7}			
+				mov r4, r8					
 				mov r5, r9
 				mov r6, r10
 				mov r7, r11
+;				adds r0, r0, #16
 				stm r0!, {r4-r7}
-				mov r5, r14
+;				adds r0, r0, #16
+				mov r5, r14					; save LR in R5
 				IMPORT  APOS_SetPSP
-                LDR     R0, =APOS_SetPSP
-                BLX     R0
-				mov r14, r5
-				adds r0, r0, #16
+                LDR     R0, =APOS_SetPSP	; call C-Function
+                BLX     R0					; to set psp for next Task
+				mov r14, r5					; get LR back from R5
+				subs r0, r0, #16
 				ldm r0!, {r4-r7}
 				mov r8, r4
 				mov r9, r5
@@ -174,13 +175,6 @@ PendSV_Handler  PROC
 				subs r0, r0, #32
 				ldm r0!, {r4-r7}
                 BX     LR
-;set psp auf Taskb, bzw aufn nächsten Task
-; LR sichern
-; C Funktion: nächsten TaskB
-; LR zurückholen
-; R 4 5 6 7 8 9 10 11
-;				SCB->ICSR &= ~SCB_ICSR_PENDSVSET_Msk;	// finally cealr PendSV
-				BX		LR
                 ENDP
 SysTick_Handler PROC
                 EXPORT  SysTick_Handler                [WEAK]

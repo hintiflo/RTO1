@@ -4,6 +4,7 @@
 #include "stm32f0xx.h"
 #include "BSP/Key.h"
 #include <string.h>
+#include	"APOS.h"
 
 
 #define NUM_COLORS 3
@@ -17,44 +18,47 @@ static char output[MAX_OUTPUT];
 
 void TaskKey (void)
 {
-	static int i = 0;
-	static BOOL printKey = TRUE;
+	int i = 0;
+	BOOL printKey = TRUE;
 	BOOL pressed = FALSE, print = FALSE;
-
-	if(Key_GetState(KeyType_WAKEUP)) {
-		strncpy(output, "Key: WAKEUP", LEN_WAK);
-		pressed = TRUE;
-		print = TRUE;
-		printKey = TRUE;
-	}
-	
-	if(Key_GetState(KeyType_USER0)) {
-		Tft_SetForegroundColourRgb16(color[i]);
-		i = (i + 1) % 3;
-		strncpy(output, "Key: USER0 ", LEN_WAK);
-		pressed = TRUE;
-		print = TRUE;
-		printKey = TRUE;
-	}
-	
-	if(Key_GetState(KeyType_USER1)) {
-		strncpy(output, "Key: USER1 ", LEN_WAK);
-		pressed = TRUE;
-		print = TRUE;
-		printKey = TRUE;
-	}
-	
-	if(!pressed ) {
-		if(printKey) {
-			strncpy(output, "Key:       ", LEN_WAK);
+	while(1) {
+		if(Key_GetState(KeyType_WAKEUP)) {
+			strncpy(output, "Key: WAKEUP", LEN_WAK);
+			pressed = TRUE;
 			print = TRUE;
-			printKey = FALSE;
+			printKey = TRUE;
 		}
+		
+		if(Key_GetState(KeyType_USER0)) {
+			Tft_SetForegroundColourRgb16(color[i]);
+			i = (i + 1) % 3;
+			strncpy(output, "Key: USER0 ", LEN_WAK);
+			pressed = TRUE;
+			print = TRUE;
+			printKey = TRUE;
+		}
+		
+		if(Key_GetState(KeyType_USER1)) {
+			strncpy(output, "Key: USER1 ", LEN_WAK);
+			pressed = TRUE;
+			print = TRUE;
+			printKey = TRUE;
+		}
+		
+		if(!pressed ) {
+			if(printKey) {
+				strncpy(output, "Key:       ", LEN_WAK);
+				print = TRUE;
+				printKey = FALSE;
+			}
+		}
+		
+		if(print) {
+			APOS_EnterRegion();
+			Tft_DrawString(10, 18+1*24, output);
+			APOS_LeaveRegion();
+			print = FALSE;
+		}
+		//APOS_Scheduler();
 	}
-	
-	if(print) {
-		Tft_DrawString(10, 18+1*24, output);
-		print = FALSE;
-	}
-
 }

@@ -4,14 +4,12 @@
 #include "stm32f0xx.h"
 #include "BSP/systick.h"
 
-#include	"APOS.h"
-
 // Quelle Algorithmus Mandelbrot: http://warp.povusers.org/Mandelbrot/ 
 
 #define ImageHeight 150
 #define ImageWidth  150
 #define OFFSET			150
-#define TEXT_INTER 500
+
 
 static void MandelBrot (void)
 {
@@ -61,9 +59,7 @@ static void MandelBrot (void)
 
 					} else {
 						if(isInside) { 
-							APOS_EnterRegion();
-							Tft_DrawPixel(y, x + OFFSET);
-							APOS_LeaveRegion();
+						Tft_DrawPixel(y, x + OFFSET);
 						}
 						isInside = TRUE;
 						x++;
@@ -82,19 +78,12 @@ static void MandelBrot (void)
 
 void TaskMandelbrot (void)
 {
-	static uint32_t last = 0;
-
-	if((Systick_GetTick() - last) > TEXT_INTER) {
-		APOS_EnterRegion();
+	static char first = TRUE;
+	if(first) {
 		Tft_DrawString(10, 18+5*24, "ManBr ");
-		APOS_LeaveRegion();
-		last = Systick_GetTick();
+		first = FALSE;
 	}
-
-		while (1) 
-		{
-			MandelBrot();	
-			// enter Code
-			//APOS_Scheduler();
-		}
+	
+	MandelBrot();	
+//	OrigMandelBrot();
 }

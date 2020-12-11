@@ -13,45 +13,11 @@ static const uint32_t maxTasks = 10;
 static uint32_t numTasks = 0;
 static uint32_t currentTask = 0;
 static APOS_TCB_STRUCT* pTasks[maxTasks];
+static uint32_t IS_Initialized = 0;
 
-void Debug_TaskOn_A(){	GPIO_WriteBit(GPIOB, GPIO_Pin_5,	Bit_SET);		};
-void Debug_TaskOff_A(){	GPIO_WriteBit(GPIOB, GPIO_Pin_5,	Bit_RESET);	};
-void Debug_TaskOn_B(){	GPIO_WriteBit(GPIOB, GPIO_Pin_6,	Bit_SET);		};
-void Debug_TaskOff_B(){	GPIO_WriteBit(GPIOB, GPIO_Pin_6,	Bit_RESET);	};
-void Debug_TaskOn_C(){ 	GPIO_WriteBit(GPIOB, GPIO_Pin_7,	Bit_SET);		};
-void Debug_TaskOff_C(){	GPIO_WriteBit(GPIOB, GPIO_Pin_7,	Bit_RESET);	};
+BOOL verifyStackEnd(void);
 
-void TaskA (void) 
-{		FillTaskA();
-		while (1) 
-		{
-			Debug_TaskOn_A();
-			// enter Code
-			Debug_TaskOff_A();
-			APOS_Scheduler();
-		}
-}
-
-void TaskB (void) 
-{		FillTaskB();
-		while (1) 
-		{ Debug_TaskOn_B();
-			// enter Code
-			Debug_TaskOff_B();
-			APOS_Scheduler();
-		}
-}
-
-void TaskC (void) 
-{		FillTaskC();
-		while (1) 
-		{ Debug_TaskOn_C();
-			// enter Code
-			Debug_TaskOff_C();
-			APOS_Scheduler();
-		}
-}
-
+BOOL prioSufficient( void );
 
 
 static void copyTasks(APOS_TCB_STRUCT** source, APOS_TCB_STRUCT** dest, uint32_t size)
@@ -60,97 +26,215 @@ static void copyTasks(APOS_TCB_STRUCT** source, APOS_TCB_STRUCT** dest, uint32_t
 	}
 }
 
+static BOOL APOS_Running(void);
+
+
+
 void APOS_Init(void)  													// Initialisert das Echtzeitbetriebssystem
-{	for(int i = 0; i < numTasks; i++) 
-	{	pTasks[i] = NULL;
+{	
+	// NVIC_InitTypeDef NVIC_InitStruct;
+	// NVIC_InitStruct.NVIC_IRQChannel = PendSV_IRQn;
+	// NVIC_InitStruct.NVIC_IRQChannelPriority = 0xF0;	// höchster Wert: kleinste Prio
+	// 																								// 0xF im oberen nibble: 0b11110000
+	// NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;	
+	// NVIC_Init(&NVIC_InitStruct);
+	// 
+	// NVIC_SetPriority(PendSV_IRQn, 0xF0 );				
+	
+	for(int i = 0; i < numTasks; i++) 
+	{		pTasks[i] = NULL;
 	}
+	
+}
+
+static void APOS_STACK_INIT(APOS_TCB_STRUCT* pTask)
+{
+//	if(currentTask == 0)
+//		return;
+	pTask->pStack[pTask->stackSize-1] = 0x01000000; // xPSR ( thumb mode )
+	pTask->pStack[pTask->stackSize-2] = (uint32_t)pTask->routine; // PC
+	pTask->pStack[pTask->stackSize-3] = (uint32_t)APOS_Scheduler; // LR
+	for(int i = 0; i < 5; i++)
+	{
+		pTask->pStack[pTask->stackSize-i-4] = i+1; // r12, r3, r2, r1, r0
+	}
+	pTask->pStack = pTask->pStack + pTask->stackSize-7-1;
 }
 
 void APOS_TASK_Create( APOS_TCB_STRUCT* pTask,  	// TaskControlBlock
-#ifdef DEBUG
+					#ifdef DEBUG
 						const char* pTaskName, 								// Task Name – nur für Debug-Zwecke
-#endif
+					#endif
 						uint32_t Priority,  									// Priorität des Tasks (vorerst nicht in Verwendung)
 						void (*pRoutine)(void),  							// Startadresse Task (ROM)
-						void* pStack, 												// Startadresse Stack des Tasks (RAM)
+						uint32_t* pStack, 												// Startadresse Stack des Tasks (RAM)
 						uint32_t StackSize,  									// Größe des Stacks
 						uint32_t TimeSlice  									// Time-Slice für Round Robin Scheduling
 						)
 {
-
-	
-	if(pRoutine == NULL)
+	if(pRoutine == NULL)														// Abbruch wenn keine gültige Funktions-adresse
 		return;
 	
-	if(!pTask)
+	if(!pTask)																			// notwendigen Speicher für Task-Daten allokiern
 		pTask = calloc(sizeof(APOS_TCB_STRUCT), 1);
 	
-#ifdef DEBUG
+	
+	#ifdef DEBUG
 	if(!pTaskName)
 		return;
 	pTask->pTaskName = calloc(sizeof(char), strlen(pTaskName));
 	strcpy(pTask->pTaskName, pTaskName);
-#endif
-
-	
-	pTask->prio = Priority;
+	#endif
+	pTask->prio = Priority;													// Task-Daten in den control block übernehmen
 	pTask->routine = pRoutine;
-//	if(pStack == NULL)
-//		pTask->pStack = calloc(sizeof(uint8_t), StackSize);
-//	else
-		pTask->pStack = (uint32_t)pStack;
-	
+	pTask->pStack = pStack;
 	pTask->timeSlice = TimeSlice;
-	
-	if(numTasks < maxTasks) {
-		pTasks[numTasks] = pTask;
+	pTask->stackSize = StackSize / 4;
+	pTask->status = RUNNING;
+	pTask->statusTime = Systick_GetTick();
+	pTask->delay = 0;
+	APOS_STACK_INIT(pTask);
+	if(numTasks < maxTasks) {												
+		pTasks[numTasks] = pTask;											// in der Task-Liste eintragen
 		numTasks++;
 	}
-
+	
+	SET_STACK_END(pTask->pStack, pTask->stackSize);
 	
 }
 
-void APOS_Start(void)  // Starten des Echtzeitbetriebssystems
+void APOS_Start(void)  														// Starten des Echtzeitbetriebssystems
 {
-	APOS_SetPSP();
-	__set_CONTROL(1);
+	// __set_PSP((uint32_t)pTasks[currentTask]->pStack);
+	__set_PSP( __get_MSP() );
+	__set_CONTROL(2);				// [0]=0 	privileged mode um IRQs enable/disable zu koennen
+	//setPendSV();												// [1]=1 thread mode - Alternate stack pointer PSP is used. 
+	IS_Initialized = 1;
+	// pTasks[currentTask]->routine();				// Scheduler in Endlos-Schleife ausführen
+	
 	while(1)
-		APOS_Scheduler();
+		{	}
+	
 }
 						
 void APOS_Scheduler(void)
 {
 	static int lastTick = 0;
-
-	int tick = Systick_GetTick();
-	if(lastTick == 0)
-		lastTick = tick;
+	if(IS_Initialized)
+	{
 	
+		if(lastTick == 0)
+		{	lastTick = Systick_GetTick();
+			setPendSV();
+		}	
+		else if(
+			((Systick_GetTick() - lastTick) >= pTasks[currentTask]->timeSlice || !APOS_Running()) // wenn timeSlice des aktuellen abgelaufen
+			&& prioSufficient()																																		// und der Prio-Check es zulässt
+		)
+		{
 
-	
+			if(!verifyStackEnd())			// Intergrität des aktuellen Stacks verifizieren
+				{	// __aeabi_assert("corrupt Stack", "APOS.c", 125);
+				}
 
-	
-	// switch task
-	if((tick - lastTick) >= pTasks[currentTask]->timeSlice) {
-		currentTask++;
-		currentTask %= numTasks;
-		lastTick = Systick_GetTick();
-		setPendSV();
-	} else { // exec task
-		pTasks[currentTask]->routine();
+			lastTick = Systick_GetTick();
+			setPendSV();																// PendSV Handler auslösen
+		} //else 
+//		{	
+//			pTasks[currentTask]->routine();	 						// akutelle Task-Funktion callen
+//		}
 	}
-
 }
 
 void APOS_SetPSP(void)
-{
-	__set_PSP(pTasks[currentTask]->pStack);
+{	
+	static uint8_t startup = 0;
+	if ( startup == 0 )
+	{	startup++;
+	}	else{
+		pTasks[currentTask]->pStack = (uint32_t*)__get_PSP();
+		currentTask++;															// auf nächsten Task schalten
+		currentTask %= numTasks;
+	}
+	__set_PSP((uint32_t)pTasks[currentTask]->pStack);
 }
 
 void	setPendSV(void)
-{
-  SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
-  
-	// SCB->ICSR &= ~SCB_ICSR_PENDSVSET_Msk;	// clear PendSV, useful for Handler
+{	// NVIC_SetPendingIRQ(PendSV_IRQn); ... wirkungslos, beobachtet beim debuggen
+	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
 }
 
+// betreten einer critical region durch deaktivieren aller Interrupts
+void APOS_EnterRegion()	// um einen task switch zu verhindern
+{	// uint32_t primask = __get_PRIMASK();
+	__disable_irq();
+	// primask = __get_PRIMASK(); 				...zum debuggen, ob IRQ wirklich deaktiviert wurde
+																				// nach disable muss primask == 1 sein
+}
+
+// verlassen einer critical region durch aktivieren aller Interrupts
+void APOS_LeaveRegion()	// um task switch wieder zu ermöglichen
+{	//	uint32_t primask = __get_PRIMASK();
+	__enable_irq();	//  wirkungslos?
+	// primask = __get_PRIMASK();					...zum debuggen, ob IRQ wirklich wieder aktiviert wurde
+																				// nach disable muss primask == 0 sein
+}
+
+// prufen, ob critical region schon vergeben ist, durch prüfen 
+// return 1 ... region vergeben
+// return 0 ... region ist gerade frei
+int APOS_TestRegion()	// ob priority mask der IRQs gesetzt wurde
+{	uint32_t primask = __get_PRIMASK();		
+	return primask;
+}	
+
+void APOS_Delay (uint32_t ticks)
+{	
+	pTasks[currentTask]->status = SUSPENDED;
+	pTasks[currentTask]->delay = ticks;
+	pTasks[currentTask]->statusTime = Systick_GetTick();
+}
+
+static BOOL APOS_Running(void) {
+	switch(pTasks[currentTask]->status) {
+		case RUNNING:
+			return TRUE;
+			break;
+		case SUSPENDED:
+			if((Systick_GetTick() - pTasks[currentTask]->statusTime) > pTasks[currentTask]->delay) {
+				pTasks[currentTask]->status = RUNNING;
+				pTasks[currentTask]->statusTime = Systick_GetTick();
+				pTasks[currentTask]->delay = 0;
+				return TRUE;
+			}
+			return FALSE;
+			break;
+	}
+}
+
+// etnscheidet, ob der nächste task geeignete Priorität zum switchen aufweist
+BOOL prioSufficient( void )
+{		// Prio ds nächsten Task feststellen
+		uint32_t nextPrio = 0;
+		if( currentTask < numTasks )	nextPrio = pTasks[currentTask+1]->prio;
+		if( currentTask == numTasks )	nextPrio = pTasks[0]->prio;
+	
+		if( nextPrio >= pTasks[currentTask]->prio ) 
+			return TRUE;
+
+		if( nextPrio <= pTasks[currentTask]->prio 
+				&& pTasks[currentTask]->status == SUSPENDED)
+			return TRUE;
+	
+	return FALSE;
+}
+
+
+// Testen, ob das Ende des Stacks = "STACK-END", also nicht ueberschrieben wurde
+// retourniert '1' bei korrektem Stack, '0' bei Fehler
+BOOL verifyStackEnd(void) 
+{    
+        if(STACK_END != GET_STACK_END(pTasks[currentTask]->pStack, pTasks[currentTask]->stackSize))
+                return FALSE;
+        else    return TRUE;
+}

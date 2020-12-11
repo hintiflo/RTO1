@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2020.9.14)  10 DEC 2020 19:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2020.9.14)  11 DEC 2020 22:56
 entering extended mode
 **./Protokoll_UE3_Steindl_Hinterleitner.tex
 (Protokoll_UE3_Steindl_Hinterleitner.tex
@@ -685,25 +685,75 @@ Package gensymb Info: Using \textmu for \micro on input line 30.
 
 [1
 
-{C:/Users/r.hif/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [1]
-(Protokoll_UE3_Steindl_Hinterleitner.aux) ) 
+{C:/Users/r.hif/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+LaTeX Font Info:    Try loading font information for TS1+lmss on input line 59.
+
+
+("C:\bin\MiKTeX 2.9\tex/latex/lm\ts1lmss.fd"
+File: ts1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+<BSP1_Prio_1.jpg, id=9, 671.50874pt x 890.32625pt>
+File: BSP1_Prio_1.jpg Graphic file (type jpg)
+<use BSP1_Prio_1.jpg>
+Package pdftex.def Info: BSP1_Prio_1.jpg  used on input line 73.
+(pdftex.def)             Requested size: 100.09526pt x 132.70088pt.
+<BSP1_Prio_100.jpg, id=10, 729.72626pt x 1127.21124pt>
+File: BSP1_Prio_100.jpg Graphic file (type jpg)
+<use BSP1_Prio_100.jpg>
+Package pdftex.def Info: BSP1_Prio_100.jpg  used on input line 74.
+(pdftex.def)             Requested size: 100.09526pt x 154.60933pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<BSP1_Prio_200.jpg, id=11, 705.63625pt x 992.70876pt>
+File: BSP1_Prio_200.jpg Graphic file (type jpg)
+<use BSP1_Prio_200.jpg>
+Package pdftex.def Info: BSP1_Prio_200.jpg  used on input line 75.
+(pdftex.def)             Requested size: 100.09526pt x 140.81113pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Bsp2_pre.png, id=12, 320.69812pt x 130.98938pt>
+File: Bsp2_pre.png Graphic file (type png)
+<use Bsp2_pre.png>
+Package pdftex.def Info: Bsp2_pre.png  used on input line 81.
+(pdftex.def)             Requested size: 200.19054pt x 81.7702pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Bsp2_post.png, id=14, 400.99812pt x 167.12437pt>
+File: Bsp2_post.png Graphic file (type png)
+<use Bsp2_post.png>
+Package pdftex.def Info: Bsp2_post.png  used on input line 82.
+(pdftex.def)             Requested size: 200.19054pt x 83.43446pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[1 <./BSP1_Prio_1.jpg>]
+
+LaTeX Warning: Text page 2 contains only floats.
+
+[2 <./BSP1_Prio_100.jpg> <./BSP1_Prio_200.jpg> <./Bsp2_pre.png> <./Bsp2_post.pn
+g>] (Protokoll_UE3_Steindl_Hinterleitner.aux) ) 
 Here is how much of TeX's memory you used:
- 5437 strings out of 492895
- 70869 string characters out of 3138119
- 157300 words of memory out of 3000000
- 9226 multiletter control sequences out of 15000+200000
- 26722 words of font info for 24 fonts, out of 3000000 for 9000
+ 5492 strings out of 492895
+ 71919 string characters out of 3138119
+ 161300 words of memory out of 3000000
+ 9270 multiletter control sequences out of 15000+200000
+ 27092 words of font info for 25 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,5n,43p,472b,161s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/bin/MiKTeX 2.9/fonts/enc/dvips/l
-m/lm-ec.enc}<C:/bin/MiKTeX 2.9/fonts/type1/public/lm/lmss10.pfb><C:/bin/MiKTeX 
-2.9/fonts/type1/public/lm/lmss12.pfb><C:/bin/MiKTeX 2.9/fonts/type1/public/lm/l
-mss17.pfb><C:/bin/MiKTeX 2.9/fonts/type1/public/lm/lmss9.pfb><C:/bin/MiKTeX 2.9
-/fonts/type1/public/lm/lmssbx10.pfb>
-Output written on Protokoll_UE3_Steindl_Hinterleitner.pdf (2 pages, 96478 bytes
-).
+ 41i,6n,43p,320b,277s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/bin/MiKTeX 2.9/fonts/enc/dvi
+ps/lm/lm-ts1.enc}{C:/bin/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}<C:/bin/MiKTeX
+ 2.9/fonts/type1/public/lm/lmss10.pfb><C:/bin/MiKTeX 2.9/fonts/type1/public/lm/
+lmss12.pfb><C:/bin/MiKTeX 2.9/fonts/type1/public/lm/lmss17.pfb><C:/bin/MiKTeX 2
+.9/fonts/type1/public/lm/lmss9.pfb><C:/bin/MiKTeX 2.9/fonts/type1/public/lm/lms
+sbx10.pfb>
+Output written on Protokoll_UE3_Steindl_Hinterleitner.pdf (3 pages, 763458 byte
+s).
 PDF statistics:
- 30 PDF objects out of 1000 (max. 8388607)
+ 43 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

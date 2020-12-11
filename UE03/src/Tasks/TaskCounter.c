@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "stm32f0xx_gpio.h"
 #include "BSP/systick.h"
+#include	"APOS.h"
 
 #define INTERVAL_COUNT 5
 
@@ -12,15 +13,18 @@ static char tmpBuf[MAX_LEN];
 
 void TaskCounter (void)
 {
-	static uint32_t counter = 0, lastTick = 0;
-	uint32_t tick = Systick_GetTick();
+	static uint32_t counter = 0;
 	
-	counter++;
-	if((tick-lastTick) > INTERVAL_COUNT)
+	while(1)
 	{
+		counter++;
 		snprintf(tmpBuf, MAX_LEN, "%d", counter);
-		Tft_DrawString(10, 18+0*24, "Cnt ");	
-		Tft_DrawString(10 + 16*7, 18+0*24, tmpBuf);		
+		APOS_EnterRegion();
+		Tft_DrawString(10, 18+0*24, "Cnt ");
+		Tft_DrawString(10 + 16*7, 18+0*24, tmpBuf);
+		APOS_LeaveRegion();
+		// APOS_Scheduler();
+
 	}
 	
 }
